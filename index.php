@@ -1,33 +1,17 @@
 <?php
 
+use M151\Application;
+use M151\Router;
+use M151\Controller\DefaultController;
+
 # lade composer autoloader:
 require_once(__DIR__.'/vendor/autoload.php');
 
-# setze Output-Type auf Plaintext, für debugging-Ausgabe:
-header('Content-Type: text/plain');
+# Definiere Routen:
+Router::get('/',DefaultController::class,'index');
+Router::any('/demo',DefaultController::class,'demo');
+Router::any('/smarty',DefaultController::class,'smarty');
 
-# extrahiere URL-Route:
-$path_info = isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : '/';
-echo "requested route: {$path_info}\n";
-echo "requested params: ".print_r($_REQUEST,true)."\n";
-
-# Teste Auto-Loading (siehe composer.json):
-#$test = new M151\Test();
-#$test->hello();
-
-$request = new M151\Request();
-
-// fill $_REQUEST in class array
-foreach ($_REQUEST as $key => $value)
-{
-	$request->addRequestParameter($key, $value);
-}
-
-$request->setMethod();
-$request->setRoute();
-
-$app = new M151\Application();
-$app->setRequest($request);
+# Übergebe an Applikation:
+$app = Application::getInstance();
 $app->start();
-
-

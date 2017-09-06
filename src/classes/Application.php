@@ -1,17 +1,38 @@
 <?php
+
 namespace M151;
 
-class Application
+use M151\Http\Request;
+
+class Application 
 {
-	private $request;
+    private static $_inst;
 
-	public function start()
-	{
-		
-	}
+    public $request = null;
+    public $controller = null;
+    public $routeInfo = null;
 
-	public function setRequest(Request $r)
-	{
-		$this->request = $r;
-	}
+    private function __construct() 
+    {
+        $this->request = new Request($_REQUEST, $_SERVER);
+    }
+
+    public static function getInstance() 
+    {
+        if (!static::$_inst) 
+        {
+            static::$_inst = new Application();
+        }
+        return static::$_inst;
+    }
+
+    public function start() 
+    {
+        $routeInfo = Router::findRouteInfo($this->request);
+        $controller = Router::getRouteController($routeInfo);
+        $this->controller = $controller;
+        $this->routeInfo = $routeInfo;
+        $actionFn = $routeInfo['action'];
+        $ret = $controller->$actionFn($this->request);
+    }
 }
