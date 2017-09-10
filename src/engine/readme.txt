@@ -1,0 +1,1 @@
+The Smarty directories are only accessed by the Smarty library and never accessed directly by the web browser. Therefore to avoid any security concerns, it is recommended (but not mandatory) to place these directories outside of the web server's document root.

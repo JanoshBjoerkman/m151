@@ -1,0 +1,2 @@
+
+Hallo {$name}, herzlich Willkommen!
