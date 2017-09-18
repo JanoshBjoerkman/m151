@@ -11,6 +11,7 @@ require_once(__DIR__.'/vendor/autoload.php');
 Router::get('/',DefaultController::class,'index');
 Router::any('/demo',DefaultController::class,'demo');
 Router::any('/smarty',DefaultController::class,'smarty');
+Router::any('/toll',DefaultController::class,'testCon');
 
 # Übergebe an Applikation:
 $app = Application::getInstance();

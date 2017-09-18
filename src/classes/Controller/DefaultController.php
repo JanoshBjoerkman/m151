@@ -3,6 +3,7 @@ namespace M151\Controller;
 
 use M151\Http\Request;
 use M151\View\View;
+use M151\Model\TestModel;
 
 class DefaultController extends Controller 
 {
@@ -26,17 +27,28 @@ class DefaultController extends Controller
 
     public function smarty(Request $req)
     {
+
         $smarty = new \Smarty();
-        $smarty->setTemplateDir(dirname(__FILE__).'/../../engine/templates');
-        $smarty->setCompilerDir(dirname(__FILE__).'/../../engine/templates_c');
+        $smarty->setTemplateDir(dirname(__FILE__).'/../../engine/templates/');
+        $smarty->setCompileDir(dirname(__FILE__).'/../../engine/templates_c');
         $smarty->setConfigDir(dirname(__FILE__).'/../../engine/configs/');
         $smarty->setCacheDir(dirname(__FILE__).'/../../engine/cache/');
 
-        $smarty->debugging = true;
+        $smarty->testInstall();
 
         $smarty->assign('name', 'Björk');
         print_r($smarty->getTemplateDir());
         print_r($smarty->getConfigVars());
         $smarty->display('test.tpl');
+    }
+
+    public function testCon()
+    {
+        $model = TestModel::getInstance();
+        $con =$model->getConnection();
+        if($con)
+        {
+            echo "hell yess";
+        }
     }
 }
