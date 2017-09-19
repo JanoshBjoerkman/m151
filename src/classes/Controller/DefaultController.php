@@ -34,18 +34,14 @@ class DefaultController extends Controller
         $smarty->setConfigDir(dirname(__FILE__).'/../../engine/configs/');
         $smarty->setCacheDir(dirname(__FILE__).'/../../engine/cache/');
 
-        $smarty->testInstall();
-
         $smarty->assign('name', 'Björk');
-        print_r($smarty->getTemplateDir());
-        print_r($smarty->getConfigVars());
         $smarty->display('test.tpl');
     }
 
     public function testCon()
     {
         $model = TestModel::getInstance();
-        $con =$model->getConnection();
+        $con = $model->getConnection();
         if($con)
         {
             echo "hell yess";

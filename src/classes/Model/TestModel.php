@@ -18,10 +18,10 @@ class TestModel
 
     public function loadConfig()
     {
-        $dsn = 'mysql:host=mysql;port=3306;dbname=notekeeper';
-        $username = 'root';
-        $password = '';
-        $options = array(
+        $this->dsn = 'mysql:host=localhost;port=3306;dbname=notekeeper';
+        $this->username = 'root';
+        $this->password = 'root';
+        $this->options = array(
             \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
         );
     }
@@ -39,7 +39,7 @@ class TestModel
     {
         if(!static::$dbh)
         {
-            static::$dbh = new \PDO($dsn, $username, $password, $options);
+            static::$dbh = new \PDO($this->dsn, $this->username, $this->password, $this->options);
         }
         return static::$dbh;
     }
