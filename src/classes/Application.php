@@ -7,6 +7,7 @@ use M151\Http\Request;
 class Application 
 {
     private static $_inst;
+    private $dbConnection;
 
     public $request = null;
     public $controller = null;
@@ -34,5 +35,16 @@ class Application
         $this->routeInfo = $routeInfo;
         $actionFn = $routeInfo['action'];
         $ret = $controller->$actionFn($this->request);
+    }
+
+    public function getDBconnection()
+    {
+        if(!$this->dbConnection)
+        {
+            // loadconfig
+            require(__DIR__.'/../../db_config.php');
+            $this->dbConnection = new \PDO($dsn, $username, $password, $options);
+        }
+        return $this->dbConnection;
     }
 }
