@@ -43,7 +43,7 @@ class Application
         {
             // loadconfig
             require(__DIR__.'/../../db_config.php');
-            $this->dbConnection = new \PDO($dsn, $username, $password, $options);
+            $this->dbConnection = new \PDO($this->dsn, $this->username, $this->password, $this->options);
         }
         return $this->dbConnection;
     }

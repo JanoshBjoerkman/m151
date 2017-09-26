@@ -1,0 +1,9 @@
+<?php foreach ( $users as $user ): ?>
+<tr>
+    <td><?php echo $user['id']; ?></td>
+    <td><?php echo $user['login']; ?></td>
+    <td><?php echo $user['name']; ?></td>
+    <td><?php echo $user['vorname']; ?></td>
+    <td><a href="mailto:<?php echo $user['email']; ?>"><?php echo $user['email']; ?></a></td>
+</tr>
+<?php endforeach ?>

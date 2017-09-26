@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <h1>jQuery Ajax Example</h1>
+    <h2>List of Users, from JSON ajax data</h2>
+    <button id="button1" type="button">Load</button>
+
+    <div id="loader1" style="display:none">Loading ... please wait</div>
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Login</th>
+                    <th>Name</th>
+                    <th>Vorname</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody id="resultTable"></tbody>
+        </table>
+    </div>
+
+
+    <h2>List of Users, from HTML ajax data</h2>
+    <button id="button2" type="button">Load</button>
+    <div id="loader2" style="display:none">Loading ... please wait</div>
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Login</th>
+                    <th>Name</th>
+                    <th>Vorname</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody id="resultTable2"></tbody>
+        </table>
+    </div>
+
+    <script type="text/javascript">
+        // ---------------- Laden der Daten, JSON-Version ------------------------
+        $('#button1').on('click', function () {
+            // Laden der User-Liste:
+            $('#loader1').show();
+
+            $.get('ajax/loadUsers?contentType=json').then(function (res) {
+                $('#loader1').hide();
+                var resContainer = $('#resultTable');
+                resContainer.html('');
+
+                if (res && res.length > 0) {
+                    res.forEach(function (record) {
+                        var row = $('<tr></tr>');
+                        row.append('<td>' + record.id + '</td>');
+                        row.append('<td>' + record.login + '</td>');
+                        row.append('<td>' + record.name + '</td>');
+                        row.append('<td>' + record.vorname + '</td>');
+                        row.append('<td><a href="mailto:' + record.email + '">' + record.email + '</a></td>');
+                        resContainer.append(row);
+                    });
+                }
+            });
+        });
+
+
+
+
+        // ---------------- Laden der Daten, HTML-Version ------------------------
+        $('#button2').on('click', function () {
+            // Laden der User-Liste:
+            $('#loader2').show();
+
+            $.get('ajax/loadUsers?contentType=html').then(function (res) {
+                $('#loader2').hide();
+                var resContainer = $('#resultTable2');
+                resContainer.html(res);
+            });
+        });
+    </script>
+</body>
+
+</html>

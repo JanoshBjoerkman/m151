@@ -9,7 +9,7 @@ class ModelDemoController extends Controller
 {
     public function index(Request $req) 
     {
-        header('Content-Type: text/plain');
+        //header('Content-Type: text/plain');
 
         // Erstelle QueryBuilder:
         $conn = Application::getInstance()->getDBconnection();
