@@ -18,6 +18,7 @@ Router::any('/smarty2', DefaultController::class, 'externsmarty');
 Router::any('/connection', DefaultController::class, 'testCon');
 Router::get('/login_form', DefaultController::class, 'get_login_form');
 Router::post('/login_try', DefaultController::class, 'login_try');
+Router::any('/querybuilder', ModelDemoController::class, 'index');
 
 # Übergebe an Applikation:
 $app = Application::getInstance();
