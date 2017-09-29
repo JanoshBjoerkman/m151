@@ -11,10 +11,7 @@ require_once(__DIR__.'/vendor/autoload.php');
 
 # Definiere Routen:
 Router::get('/', DefaultController::class, 'index');
-// testing mvc routing
-Router::any('/demo', DefaultController::class, 'demo');
-// testing smarty
-Router::any('/smarty', DefaultController::class, 'smarty');
+// testing smarty;
 Router::any('/smarty2', DefaultController::class, 'externsmarty');
 // testing db
 Router::any('/connection', DefaultController::class, 'testCon');
