@@ -28,8 +28,8 @@ class DefaultController extends Controller
 
     public function smarty(Request $req)
     {
-
-        $smarty = new \Smarty();
+        phpinfo();
+        /*$smarty = new \Smarty();
         
         $smarty->setTemplateDir(dirname(__FILE__).'/../../engine/templates/');
         $smarty->setCompileDir(dirname(__FILE__).'/../../engine/templates_c');
@@ -38,6 +38,7 @@ class DefaultController extends Controller
 
         $smarty->assign('name', 'Björk');
         $smarty->display('test.tpl');
+        */
     }
 
     public function externsmarty()

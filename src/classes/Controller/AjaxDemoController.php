@@ -18,11 +18,14 @@ class AjaxDemoController extends Controller
         $conn = Application::getInstance()->getDBconnection();
         $res = $conn->query("SELECT * FROM benutzer ORDER BY login")->fetchAll(\PDO::FETCH_ASSOC);
 
-        if ($req->getParam('contentType') === 'json') {
+        if ($req->getParam('contentType') === 'json') 
+        {
             // als JSON-Daten ausgeben:
             header('Content-Type: application/json');
             echo json_encode($res);
-        } else {
+        } 
+        else 
+        {
             // als HTML-Daten ausgeben:
             $view = new View('ajax-demo-userlist.html');
             $view->assign('users',$res);

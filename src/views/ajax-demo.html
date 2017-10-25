@@ -2,8 +2,7 @@
 <html>
 
 <head>
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -48,17 +47,17 @@
 
     <script type="text/javascript">
         // ---------------- Laden der Daten, JSON-Version ------------------------
-        $('#button1').on('click', function () {
+        $('#button1').on('click', function() {
             // Laden der User-Liste:
             $('#loader1').show();
 
-            $.get('ajax/loadUsers?contentType=json').then(function (res) {
+            $.get('ajax/loadUsers?contentType=json').then(function(res) {
                 $('#loader1').hide();
                 var resContainer = $('#resultTable');
                 resContainer.html('');
 
                 if (res && res.length > 0) {
-                    res.forEach(function (record) {
+                    res.forEach(function(record) {
                         var row = $('<tr></tr>');
                         row.append('<td>' + record.id + '</td>');
                         row.append('<td>' + record.login + '</td>');
@@ -75,11 +74,11 @@
 
 
         // ---------------- Laden der Daten, HTML-Version ------------------------
-        $('#button2').on('click', function () {
+        $('#button2').on('click', function() {
             // Laden der User-Liste:
             $('#loader2').show();
 
-            $.get('ajax/loadUsers?contentType=html').then(function (res) {
+            $.get('ajax/loadUsers?contentType=html').then(function(res) {
                 $('#loader2').hide();
                 var resContainer = $('#resultTable2');
                 resContainer.html(res);
