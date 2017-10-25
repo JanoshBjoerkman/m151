@@ -14,7 +14,6 @@ Router::get('/', DefaultController::class, 'index');
 // testing smarty;
 Router::any('/smarty2', DefaultController::class, 'externsmarty');
 // testing db
-Router::any('/connection', DefaultController::class, 'testCon');
 Router::get('/login_form', DefaultController::class, 'get_login_form');
 Router::post('/login_try', DefaultController::class, 'login_try');
 // testing query builder
