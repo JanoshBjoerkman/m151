@@ -36,15 +36,4 @@ class Application
         $actionFn = $routeInfo['action'];
         $ret = $controller->$actionFn($this->request);
     }
-
-    public function getDBconnection()
-    {
-        if(!$this->dbConnection)
-        {
-            // loadconfig
-            require(__DIR__.'/../../db_config.php');
-            $this->dbConnection = new \PDO($this->dsn, $this->username, $this->password, $this->options);
-        }
-        return $this->dbConnection;
-    }
 }
