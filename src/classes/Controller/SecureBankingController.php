@@ -6,12 +6,17 @@ use M151\Model\TestModel;
 use M151\TemplateEngine;
 use M151\Application;
 
-class BankingController extends Controller 
+class SecureBankingController extends Controller 
 {
-    public function banking()
+    public function secure_banking()
     {
+        // Session Cookie nicht über JavaScript lesbar
+        ini_set( 'session.cookie_httponly', 1 );
+        ini_set( 'session.cookie_securey', 1 );
+        // Session starten
         session_start();
-        if(isset($_SESSION['id']))
+        session_regenerate_id(true);   
+        if(isset($_SESSION['loggedIn']))
         {
             TemplateEngine::getInstance()->smarty->assign('title', 'Banking');
             TemplateEngine::getInstance()->smarty->display('banking_welcomeback.html');
@@ -21,6 +26,12 @@ class BankingController extends Controller
             TemplateEngine::getInstance()->smarty->assign('title', 'Login');
             TemplateEngine::getInstance()->smarty->display('banking_login.html');
         }
+    }
+
+    public function refresh()
+    {
+        session_start();
+        session_regenerate_id(true);
     }
 
     public function login()
@@ -54,8 +65,9 @@ class BankingController extends Controller
     private function loginSuccessful()
     {
         session_start();
-        $_SESSION['id'] = session_id();
-        header('Location: '.'http://localhost/referat/banking');
+        //$_SESSION['id'] = session_id();
+        $_SESSION['loggedIn'] = true;
+        $this->redirectTo('localhost/referat/banking');
         die();
     }
 
@@ -67,9 +79,27 @@ class BankingController extends Controller
     public function logout()
     {
         session_start();
-        $_SESSION['id'] = null;
+        //unset($_SESSION['id']);
+        unset($_SESSION['loggedIn']);
         session_destroy();
-        header('Location: '.'http://localhost/referat/banking');
+        $this->redirectTo('localhost/referat/banking');
         die();
+    }
+
+    private function redirectTo($url)
+    {
+        header('Location: '.$this->getProtocol().'://'.$url);
+    }
+
+    private function getProtocol()
+    {
+        if(isset($_SERVER['HTTPS']))
+        {
+            if(\strtoupper($_SERVER['HTTPS']) == 'ON')
+            {
+                return 'https';
+            }
+        }
+        return 'http';
     }
 }

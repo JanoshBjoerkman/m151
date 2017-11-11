@@ -2,20 +2,22 @@
 
 use M151\Application;
 use M151\Router;
-use M151\Controller\DefaultController;
 use M151\Controller\BankingController;
-use M151\Controller\RipforumController;
+use M151\Controller\SecureBankingController;
 
 # lade composer autoloader:
 require_once(__DIR__.'/vendor/autoload.php');
 
-// Normale Website
-Router::get('/', BankingController::class, 'banking');  // so quasi "index.php"
-Router::post('/banking_trylogin', BankingController::class, 'login');  // verarbeitet abgeschicktes Loginformular
-Router::get('/logout', BankingController::class, 'logout');
+// // Normale Website
+// Router::post('/banking_trylogin', BankingController::class, 'login');  // verarbeitet abgeschicktes Loginformular
+// Router::get('/logout', BankingController::class, 'logout');
+// Router::get('/banking', BankingController::class, 'banking');  // so quasi "index.php"
 
-
-Router::get('/ripforum', RipforumController::class, 'ripforum');
+// sichere Website
+Router::get('/banking', SecureBankingController::class, 'secure_banking');
+Router::post('/banking_trylogin', SecureBankingController::class, 'login');
+Router::get('/logout', SecureBankingController::class, 'logout');
+Router::get('/heartbeat', SecureBankingController::class, 'refresh');
 
 
 # Übergebe an Applikation:

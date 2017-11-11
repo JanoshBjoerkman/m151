@@ -22,7 +22,7 @@
 
 
     <nav class="navbar navbar-default" role="navigation">
-        <a class="navbar-brand" href="/referat">E-Banking</a>
+        <a class="navbar-brand" href="/referat/banking">E-Banking</a>
         <ul class="nav navbar-nav">
             <li class="active">
                 <a href="#">Home</a>
@@ -71,6 +71,21 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Bootstrap JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script>
+        function heartbeat() {
+            $.ajax({
+                url: '/referat/heartbeat',
+                async: false
+            }).complete(function() {
+                setTimeout(heartbeat, 5000);
+            });
+        }
+
+        $(document).ready(function() {
+            heartbeat();
+        });
+    </script>
 </body>
 
 </html>
