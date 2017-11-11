@@ -8,6 +8,7 @@ use M151\Application;
 
 class SecureBankingController extends Controller 
 {
+    // Generell: HTTPS verwenden!
     public function secure_banking()
     {
         // Session Cookie nicht über JavaScript lesbar
