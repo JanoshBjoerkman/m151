@@ -14,9 +14,9 @@ class SecureBankingController extends Controller
         // Session Cookie nicht über JavaScript lesbar
         ini_set( 'session.cookie_httponly', 1 );
         ini_set( 'session.cookie_securey', 1 );
-        // Session starten
-        session_start();
-        session_regenerate_id(true);   
+        
+        $this->refresh();
+
         if(isset($_SESSION['loggedIn']))
         {
             TemplateEngine::getInstance()->smarty->assign('title', 'Banking');
