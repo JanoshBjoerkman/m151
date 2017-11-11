@@ -80,8 +80,7 @@ class SecureBankingController extends Controller
     public function logout()
     {
         session_start();
-        //unset($_SESSION['id']);
-        unset($_SESSION['loggedIn']);
+        session_unset();
         session_destroy();
         $this->redirectTo('localhost/referat/banking');
         die();
