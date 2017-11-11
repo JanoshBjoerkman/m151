@@ -11,9 +11,11 @@ class SecureBankingController extends Controller
     // Generell: HTTPS verwenden!
     public function secure_banking()
     {
-        // Session Cookie nicht über JavaScript lesbar
-        ini_set( 'session.cookie_httponly', 1 );
-        ini_set( 'session.cookie_securey', 1 );
+        // Immer ein Session Cookie verwenden, $_GET['PHPSESSID'] ist invalid -> siehe: http://packetcode.com/article/preventing-session-hijacking-in-php
+        ini_set( 'session.use_only_cookies', TRUE );				
+        ini_set( 'session.use_trans_sid', FALSE );
+        // Cookies nur über HTTPS versenden -> siehe: https://stackoverflow.com/questions/25047170/php-session-cookie-secure-disables-sessions-when-set-to-true
+        ini_set( 'session.cookie_secure', TRUE );
         
         $this->refresh();
 
@@ -47,7 +49,6 @@ class SecureBankingController extends Controller
         {
             $this->loginFailed();
         }
-        
     }
 
     private function checkLoginCredentials($mail, $pw)
@@ -60,7 +61,6 @@ class SecureBankingController extends Controller
         {
             return false;
         }
-
     }
 
     private function loginSuccessful()
