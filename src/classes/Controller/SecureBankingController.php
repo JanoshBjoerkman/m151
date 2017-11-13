@@ -14,9 +14,10 @@ class SecureBankingController extends Controller
         // Immer ein Session Cookie verwenden, $_GET['PHPSESSID'] ist invalid -> siehe: http://packetcode.com/article/preventing-session-hijacking-in-php
         ini_set( 'session.use_only_cookies', TRUE );				
         ini_set( 'session.use_trans_sid', FALSE );
+        
         // Cookies nur über HTTPS versenden -> siehe: https://stackoverflow.com/questions/25047170/php-session-cookie-secure-disables-sessions-when-set-to-true
         ini_set( 'session.cookie_secure', TRUE );
-        
+
         $this->refresh();
 
         if(isset($_SESSION['loggedIn']))

@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.31, created on 2017-11-11 15:01:24
+/* Smarty version 3.1.31, created on 2017-11-12 16:35:08
   from "/home/bzt-user/webroot/referat/src/engine/templates/banking_welcomeback.html" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.31',
-  'unifunc' => 'content_5a0702b406fc69_72913287',
+  'unifunc' => 'content_5a086a2d007131_43723658',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '1ee70466b21557474e186d2a21b0307d416a27fa' => 
     array (
       0 => '/home/bzt-user/webroot/referat/src/engine/templates/banking_welcomeback.html',
-      1 => 1510408811,
+      1 => 1510500879,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5a0702b406fc69_72913287 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5a086a2d007131_43723658 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
