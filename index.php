@@ -3,14 +3,16 @@
 use M151\Application;
 use M151\Router;
 use M151\Controller\DefaultController;
+use M151\Controller\HomeController;
 use M151\Controller\ModelDemoController;
 use M151\Controller\AjaxDemoController;
+use M151\Controller\RegisterController;
 
 # lade composer autoloader:
 require_once(__DIR__.'/vendor/autoload.php');
 
-# Definiere Routen:
-Router::get('/', DefaultController::class, 'index');
+######### testin routes #########
+Router::get('info', Controller::class, 'info');
 // testing mvc routing
 Router::any('/demo', DefaultController::class, 'demo');
 // testing smarty
@@ -25,6 +27,13 @@ Router::any('/querybuilder', ModelDemoController::class, 'index');
 // testing ajax
 Router::any('/ajax', AjaxDemoController::class, 'index');
 Router::get('/ajax/loadUsers', AjaxDemoController::class, 'getUsers');
+
+######### productive routes #########
+# home
+Router::get('/', HomeController::class, 'home');
+# registration
+Router::get('/register', RegisterController::class, 'register_form');
+Router::post('/register', RegisterController::class, 'try');
 
 # Übergebe an Applikation:
 $app = Application::getInstance();

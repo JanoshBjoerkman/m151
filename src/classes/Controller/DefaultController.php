@@ -26,21 +26,6 @@ class DefaultController extends Controller
         $view->render();
     }
 
-    public function smarty(Request $req)
-    {
-        phpinfo();
-        /*$smarty = new \Smarty();
-        
-        $smarty->setTemplateDir(dirname(__FILE__).'/../../engine/templates/');
-        $smarty->setCompileDir(dirname(__FILE__).'/../../engine/templates_c');
-        $smarty->setConfigDir(dirname(__FILE__).'/../../engine/configs/');
-        $smarty->setCacheDir(dirname(__FILE__).'/../../engine/cache/');
-
-        $smarty->assign('name', 'Björk');
-        $smarty->display('test.tpl');
-        */
-    }
-
     public function externsmarty()
     {
         TemplateEngine::getInstance()->smarty->assign('name', 'ooh Björk');
@@ -54,14 +39,14 @@ class DefaultController extends Controller
 
     public function login_try()
     {
-        $login = $_POST['login'];
+        $email = $_POST['login'];
         $passwort = $_POST['passwort'];
-        echo "Ihre Eingabe: {$login}, {$passwort}";
+        echo "Ihre Eingabe: {$email}, {$passwort}";
 
         if($this->testCon())
         {
             $con = TestModel::getInstance()->getConnection();
-            $stm = $con->query("SELECT * FROM benutzer WHERE login = '{$login}' AND passwort = '{$passwort}'");
+            $stm = $con->query("SELECT * FROM Account WHERE Email = '{$email}' AND Passwort = '{$passwort}'");
             
             // PDOStatement auslesen: fetch() holt den nächsten Record, fetchAll() holt alle Records:
             $result = $stm->fetch();

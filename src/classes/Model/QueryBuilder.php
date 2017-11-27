@@ -4,10 +4,10 @@ namespace M151\Model;
 
 abstract class QueryBuilder 
 {
-
 	protected $conn = null;
 
-	public function __construct(\PDO $connection) {
+	public function __construct(\PDO $connection) 
+	{
 		$this->conn = $connection;
 	}
 
@@ -24,12 +24,11 @@ abstract class QueryBuilder
 	 */
 	abstract public function getColumns();
 
-
-
 	/**
 	 * Holt einen Datensatz nach ID
 	 */
-	public function get($id) {
+	public function get($id) 
+	{
 		$filter = "id = {$id}";
 		$res = $this->query($filter);
 		if ($res) {
@@ -42,7 +41,8 @@ abstract class QueryBuilder
 	 * @param string $filter Der SQL-WHERE-Filter, z.B. "name = 'Foo' and vorname like 'A%'"
 	 * @param string orderBy SQL-Sortierreihenfolge, z.B. "name,vorname DESC";
 	 */
-	public function query($filter,$orderBy = null) {
+	public function query($filter,$orderBy = null) 
+	{
 		$table = $this->getTable();
 		$props = $this->getColumns();
 		$proplist = $this->buildColumnList($props);
@@ -57,22 +57,24 @@ abstract class QueryBuilder
 	/**
 	 * holt ALLE Datensätze einer Tabelle, sortiert nach wunsch
 	 */
-	public function getAll($order = null) {
+	public function getAll($order = null)
+	 {
 		return $this->query("1=1",$order);
 	}
 
-	public function save($id, $data) {
+	public function save($id, $data) 
+	{
 		//TODO
 	}
 
-	public function delete($id) {
+	public function delete($id)
+	{
 		//TODO
 	}
 
-
-	protected function buildColumnList($cols) {
+	protected function buildColumnList($cols) 
+	{
 		$colnames = array_keys($cols);
 		return join(',',$colnames);
 	}
-
 }

@@ -3,6 +3,7 @@
 namespace M151;
 
 use M151\Http\Request;
+use M151\TemplateEngine;
 
 class Application 
 {
@@ -43,7 +44,19 @@ class Application
         {
             // loadconfig
             require(__DIR__.'/../../db_config.php');
-            $this->dbConnection = new \PDO($this->dsn, $this->username, $this->password, $this->options);
+            try
+            {
+                $this->dbConnection = new \PDO($this->dsn, $this->username, $this->password, $this->options);
+            }
+            catch(\PDOException $e)
+            {
+                $content = array(
+                    'title' => 'Datenbankfehler',
+                    'text' => 'Die Verbindung zur Datenbank konnte nicht hergestellt werden. Bitte wenden Sie sich an den Administrator.'
+                );
+                TemplateEngine::getInstance()->smarty->assign($content);
+                TemplateEngine::getInstance()->smarty->display('no_db_connection.html');
+            }
         }
         return $this->dbConnection;
     }
