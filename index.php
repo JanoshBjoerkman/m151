@@ -2,6 +2,7 @@
 
 use M151\Application;
 use M151\Router;
+use M151\Controller\Controller;
 use M151\Controller\DefaultController;
 use M151\Controller\HomeController;
 use M151\Controller\ModelDemoController;
@@ -12,7 +13,7 @@ use M151\Controller\RegisterController;
 require_once(__DIR__.'/vendor/autoload.php');
 
 ######### testin routes #########
-Router::get('info', Controller::class, 'info');
+Router::get('/info', Controller::class, 'info');
 // testing mvc routing
 Router::any('/demo', DefaultController::class, 'demo');
 // testing smarty
