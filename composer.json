@@ -4,7 +4,7 @@
     "type": "project",
     "require": {
         "smarty/smarty": "^3.1",
-        "propel/propel": "~2.0@dev"
+        //"propel/propel": "~2.0@dev"
     },
     "autoload": {
         "psr-4": {
