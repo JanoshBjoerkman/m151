@@ -13,10 +13,32 @@ class Controller
     }
 
     // seen on: https://stackoverflow.com/questions/110575/do-htmlspecialchars-and-mysql-real-escape-string-keep-my-php-code-safe-from-inje
-    protected function escapeString($str)
+    protected function escapeInput($str)
     {
         $new = mb_convert_encoding($str, 'UTF-8', 'UTF-8');
         $new = htmlentities($str, ENT_QUOTES, 'UTF-8');
         return $new;
+    }
+
+    protected function hash_pw($pw)
+    {
+        return password_hash($pw, PASSWORD_DEFAULT);
+    }
+
+    protected function redirect_to($url)
+    {
+        header('Location: '.$this->getProtocol().'://'.$url);
+    }
+
+    protected function getProtocol()
+    {
+        if(isset($_SERVER['HTTPS']))
+        {
+            if(\strtoupper($_SERVER['HTTPS']) == 'ON')
+            {
+                return 'https';
+            }
+        }
+        return 'http';
     }
 }

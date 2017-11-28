@@ -31,9 +31,10 @@ Router::get('/ajax/loadUsers', AjaxDemoController::class, 'getUsers');
 ######### productive routes #########
 # home
 Router::get('/', HomeController::class, 'home');
+Router::get('/home', HomeController::class, 'home');
 # registration
-Router::get('/register', RegisterController::class, 'register_form');
-Router::post('/register', RegisterController::class, 'try');
+Router::get('/register', RegisterController::class, 'show_register_form');
+Router::post('/register', RegisterController::class, 'try_to_register');
 
 # Übergebe an Applikation:
 $app = Application::getInstance();
