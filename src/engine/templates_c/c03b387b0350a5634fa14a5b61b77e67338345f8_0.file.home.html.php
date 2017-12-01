@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.31, created on 2017-12-01 14:42:27
-  from "/home/bzt-user/webroot/web151/src/engine/templates/error_message.html" */
+/* Smarty version 3.1.31, created on 2017-12-01 15:10:35
+  from "/home/bzt-user/webroot/web151/src/engine/templates/home.html" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.31',
-  'unifunc' => 'content_5a215c438434f2_57997789',
+  'unifunc' => 'content_5a2162db4df8d6_53218775',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
-    '7b4ae008c30ee185eff14e2b58ab26b1a08e7e31' => 
+    'c03b387b0350a5634fa14a5b61b77e67338345f8' => 
     array (
-      0 => '/home/bzt-user/webroot/web151/src/engine/templates/error_message.html',
-      1 => 1512135739,
+      0 => '/home/bzt-user/webroot/web151/src/engine/templates/home.html',
+      1 => 1512137337,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5a215c438434f2_57997789 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5a2162db4df8d6_53218775 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
 <!DOCTYPE html>
 <html lang="de">
@@ -29,7 +29,7 @@ function content_5a215c438434f2_57997789 (Smarty_Internal_Template $_smarty_tpl)
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?php echo $_smarty_tpl->tpl_vars['page_title']->value;?>
+    <title><?php echo $_smarty_tpl->tpl_vars['tab_title']->value;?>
 </title>
 
     <!-- Bootstrap CSS -->
@@ -48,21 +48,19 @@ function content_5a215c438434f2_57997789 (Smarty_Internal_Template $_smarty_tpl)
 </head>
 
 <body>
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <h1 class="text-center"><?php echo $_smarty_tpl->tpl_vars['h1']->value;?>
-</h1>
 
-                <div class="alert alert-danger">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <strong><?php echo $_smarty_tpl->tpl_vars['alert_title']->value;?>
-</strong> <?php echo $_smarty_tpl->tpl_vars['alert_body']->value;?>
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <ul class="nav navbar-nav">
+            <li class="active">
+                <a href="#">Kurse</a>
+            </li>
+            <li>
+                <a href="#">Meine Kurse</a>
+            </li>
+        </ul>
+    </nav>
 
-                </div>
-            </div>
-        </div>
-    </div>
+
     <!-- jQuery -->
     <?php echo '<script'; ?>
  src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"><?php echo '</script'; ?>

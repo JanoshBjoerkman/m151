@@ -11,11 +11,31 @@ class HomeController extends Controller
         $this->session->refresh();
         if(isset($_SESSION['Account_ID']))
         {
-            echo "welcome back mf :)";
+            $this->welcomeBack();
         }
         else
         {
-            echo "pls login to use this service";
+            $this->entry_point();
         }
+    }
+
+    public function welcomeBack()
+    {
+        $content = array(
+            "tab_title" => "Home",
+
+        );
+        $this->view->smarty->assign($content);
+        $this->view->smarty->display('home.html');
+    }
+
+    public function entry_point()
+    {
+        $content = array(
+            'tab_title' => "Ferienpass",
+            'page_header' => "Ferienpass Pfyn"
+        );
+        $this->view->smarty->assign($content);
+        $this->view->smarty->display('entry_point.html');
     }
 }

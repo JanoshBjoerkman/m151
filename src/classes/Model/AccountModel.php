@@ -14,7 +14,7 @@ class AccountModel extends Model
         $data = array(
             'Email' => $email
         );
-        return $this->select($data);        
+        return $this->select($data, FALSE);        
     }
 
     public function create_new_account($dataDictionary)

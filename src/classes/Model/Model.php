@@ -15,7 +15,7 @@ abstract class Model
         $this->DBH->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
     }
 
-    protected function insert($dataDictionary)
+    public function insert($dataDictionary)
     {
         $columns = $this->prepareColumnNames(array_keys($dataDictionary));
         $namedPlaceholders = $this->prepareNamedPlaceholders(array_keys($dataDictionary));
@@ -25,16 +25,26 @@ abstract class Model
         return $result;
     }
 
-    protected function select($dataDictionary, $logic = "AND")
+    public function select($dataDictionary, $selectAllColumns, $logic = "AND")
     {
         $columns = $this->prepareColumnNames(array_keys($dataDictionary));
         $where = $this->prepareNamedPlaceholdersForWhere(array_keys($dataDictionary), $logic);
-        
-        $STH = $this->DBH->prepare("SELECT {$columns} FROM {$this->tablename()} WHERE {$where}");
+
+        $query = "";
+        if($selectAllColumns)
+        {
+            $query = "SELECT * FROM {$this->tablename()} WHERE {$where}";
+        }
+        else
+        {
+            $query = "SELECT {$columns} FROM {$this->tablename()} WHERE {$where}";
+        }
+
+        $STH = $this->DBH->prepare($query);
         $result = $STH->execute($dataDictionary);
         if($result)
         {
-            // emtpy array means no rows with specified filter found
+            // emtpy array means no rows with specified filter ($dataDictionary) found
             return $STH->fetchAll(\PDO::FETCH_ASSOC);
         }
     }
@@ -61,7 +71,7 @@ abstract class Model
         {
             $placeholders[] = "({$value} = :{$value})";
         }
-        return join("$logic", $placeholders);
+        return join($logic, $placeholders);
     }
 
     public function getLastInsertedID()

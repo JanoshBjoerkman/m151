@@ -8,11 +8,12 @@ use M151\Controller\HomeController;
 use M151\Controller\ModelDemoController;
 use M151\Controller\AjaxDemoController;
 use M151\Controller\RegisterController;
+use M151\Controller\LoginController;
 
 # lade composer autoloader:
 require_once(__DIR__.'/vendor/autoload.php');
 
-######### testin routes #########
+######### testing routes #########
 Router::get('/info', Controller::class, 'info');
 // testing mvc routing
 Router::any('/demo', DefaultController::class, 'demo');
@@ -33,6 +34,8 @@ Router::get('/ajax/loadUsers', AjaxDemoController::class, 'getUsers');
 # home
 Router::get('/', HomeController::class, 'home');
 Router::get('/home', HomeController::class, 'home');
+# login
+Router::post('/login', LoginController::class, 'try_login');
 # registration
 Router::get('/register', RegisterController::class, 'register_form');
 Router::post('/register', RegisterController::class, 'try_to_register');
