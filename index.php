@@ -34,7 +34,7 @@ Router::get('/ajax/loadUsers', AjaxDemoController::class, 'getUsers');
 Router::get('/', HomeController::class, 'home');
 Router::get('/home', HomeController::class, 'home');
 # registration
-Router::get('/register', RegisterController::class, 'show_register_form');
+Router::get('/register', RegisterController::class, 'register_form');
 Router::post('/register', RegisterController::class, 'try_to_register');
 
 # Übergebe an Applikation:

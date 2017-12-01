@@ -30,4 +30,26 @@ class TemplateEngine
         }
         return static::$_inst;
     }
+    
+    public function show_register_form()
+    {
+        $content = array(
+            'title' => 'Registrieren',
+            'page_title' => 'Ferienpass-Konto erstellen',
+        );
+        TemplateEngine::getInstance()->smarty->assign($content);
+        TemplateEngine::getInstance()->smarty->display('register_form.html');        
+    }
+    
+    public function show_error_message($page_title, $h1, $alert_title, $alert_body)
+    {
+        $content = array(
+            'page_title' => "{$page_title}",
+            'h1' => "{$h1}",
+            'alert_title' => "{$alert_title}",
+            'alert_body' => "{$alert_body}"
+        );
+        $this->smarty->assign($content);
+        $this->smarty->display('error_message.html');
+    }
 }

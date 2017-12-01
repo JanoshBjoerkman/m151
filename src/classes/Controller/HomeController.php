@@ -8,6 +8,14 @@ class HomeController extends Controller
 {
     public function home(Request $req)
     {
-        echo "welcome";
+        $this->session->refresh();
+        if(isset($_SESSION['Account_ID']))
+        {
+            echo "welcome back mf :)";
+        }
+        else
+        {
+            echo "pls login to use this service";
+        }
     }
 }

@@ -19,35 +19,23 @@ abstract class Model
     {
         $columns = $this->prepareColumnNames(array_keys($dataDictionary));
         $namedPlaceholders = $this->prepareNamedPlaceholders(array_keys($dataDictionary));
-        try 
-        {
-            $STH = $this->DBH->prepare("INSERT INTO {$this->tablename()} ({$columns}) VALUES ({$namedPlaceholders})");
-            $result = $STH->execute($dataDictionary);
-            return $result;
-        }
-        catch(PDOException $e)
-        {
-            // TODO: Errorsite
-        }
+
+        $STH = $this->DBH->prepare("INSERT INTO {$this->tablename()} ({$columns}) VALUES ({$namedPlaceholders})");
+        $result = $STH->execute($dataDictionary);
+        return $result;
     }
 
     protected function select($dataDictionary, $logic = "AND")
     {
         $columns = $this->prepareColumnNames(array_keys($dataDictionary));
         $where = $this->prepareNamedPlaceholdersForWhere(array_keys($dataDictionary), $logic);
-        try
+        
+        $STH = $this->DBH->prepare("SELECT {$columns} FROM {$this->tablename()} WHERE {$where}");
+        $result = $STH->execute($dataDictionary);
+        if($result)
         {
-            $STH = $this->DBH->prepare("SELECT {$columns} FROM {$this->tablename()} WHERE {$where}");
-            $result = $STH->execute($dataDictionary);
-            if($result)
-            {
-                // emtpy array means no rows with specified filter found
-                return $STH->fetchAll(\PDO::FETCH_ASSOC);
-            }
-        }
-        catch(PDOException $e)
-        {
-            // TODO: Errorsite
+            // emtpy array means no rows with specified filter found
+            return $STH->fetchAll(\PDO::FETCH_ASSOC);
         }
     }
 
@@ -74,5 +62,10 @@ abstract class Model
             $placeholders[] = "({$value} = :{$value})";
         }
         return join("$logic", $placeholders);
+    }
+
+    public function getLastInsertedID()
+    {
+        return $this->DBH->lastInsertID();
     }
 }

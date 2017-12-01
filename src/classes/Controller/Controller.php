@@ -1,10 +1,20 @@
 <?php
 namespace M151\Controller;
 
+use M151\TemplateEngine;
+use M151\SessionHandler;
+
 class Controller 
 {
+    private $basePath;
+    protected $session;
+    protected $view;
+
     public function __construct() 
     {
+        $this->basePath = 'localhost/web151/';
+        $this->session = SessionHandler::getHandler();
+        $this->view = TemplateEngine::getInstance();
     }
 
     public function info()
@@ -27,7 +37,7 @@ class Controller
 
     protected function redirect_to($url)
     {
-        header('Location: '.$this->getProtocol().'://'.$url);
+        header('Location: '.$this->getProtocol().'://'.$this->basePath.$url);
     }
 
     protected function getProtocol()

@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.31, created on 2017-12-01 08:28:15
-  from "/home/bzt-user/webroot/web151/src/engine/templates/error_message.html" */
+/* Smarty version 3.1.31, created on 2017-12-01 08:42:16
+  from "/home/bzt-user/webroot/web151/src/engine/templates/no_db_connection.html" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.31',
-  'unifunc' => 'content_5a21048fad87b0_75646424',
+  'unifunc' => 'content_5a2107d83d5697_46245643',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
-    '7b4ae008c30ee185eff14e2b58ab26b1a08e7e31' => 
+    'ecd301107a54db6dd39b18ea346d0aacd7700f8f' => 
     array (
-      0 => '/home/bzt-user/webroot/web151/src/engine/templates/error_message.html',
-      1 => 1511880849,
+      0 => '/home/bzt-user/webroot/web151/src/engine/templates/no_db_connection.html',
+      1 => 1511792578,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_5a21048fad87b0_75646424 (Smarty_Internal_Template $_smarty_tpl) {
+function content_5a2107d83d5697_46245643 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
 <!DOCTYPE html>
 <html lang="de">
@@ -29,7 +29,7 @@ function content_5a21048fad87b0_75646424 (Smarty_Internal_Template $_smarty_tpl)
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?php echo $_smarty_tpl->tpl_vars['page_title']->value;?>
+    <title><?php echo $_smarty_tpl->tpl_vars['title']->value;?>
 </title>
 
     <!-- Bootstrap CSS -->
@@ -51,15 +51,8 @@ function content_5a21048fad87b0_75646424 (Smarty_Internal_Template $_smarty_tpl)
     <div class="container">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <h1 class="text-center"><?php echo $_smarty_tpl->tpl_vars['h1']->value;?>
+                <h1><?php echo $_smarty_tpl->tpl_vars['text']->value;?>
 </h1>
-
-                <div class="alert alert-danger">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                    <strong><?php echo $_smarty_tpl->tpl_vars['alert_title']->value;?>
-</strong> <?php echo $_smarty_tpl->tpl_vars['alert_body']->value;?>
-.
-                </div>
             </div>
         </div>
     </div>
