@@ -35,6 +35,7 @@ Router::post('/register', RegisterController::class, 'try_to_register');
 # manage
 Router::get('/manage', ManageController::class, 'manage');
 Router::get('/manage/settings', ManageController::class, 'settings');
+Router::post('/manage/new_event', ManageController::class, 'new_event');
 
 # Übergebe an Applikation:
 $app = Application::getInstance();

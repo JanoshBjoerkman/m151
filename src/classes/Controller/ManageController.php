@@ -65,15 +65,16 @@ class ManageController extends Controller
         $body_content = "";
 
         $event = new EventModel(Application::getInstance()->getDBconnection());
-        $activeEvent = $event->get_active_event();
-        if(empty($activeEvent))
+        $thisYearsEvent = $event->get_event_by_year(date("Y-m-d"));
+        $year = date("Y");
+        if(empty($thisYearsEvent))
         {
             // no active event
             $eventlink = $this->getHref("manage?edit=events");
             $body_content = "<div class='row'>
                                 <div class='col-xs-3 col-sm-3 col-md-4 col-lg-4'></div>
                                 <div class='col-xs-6 col-sm-6 col-md-4 col-lg-4'>
-                                    <h4>kein aktiver Event</h4>
+                                    <h4>kein eingetragener Event für {$year}</h4>
                                     <a class='btn btn-large btn-block btn-primary' href='{$eventlink}' role='button'>Event erstellen</a>
                                 </div>
                             </div>";
@@ -81,9 +82,9 @@ class ManageController extends Controller
         else
         {
             // get active event title and count courses
-            $title = $activeEvent[0]['Titel'];
+            $title = $thisYearsEvent[0]['Titel'];
             $course = new KursModel(Application::getInstance()->getDBconnection());
-            $numberOfCourses = count($kurs->get_courses_by_active_event($activeEvent[0]['ID']));
+            $numberOfCourses = count($kurs->get_courses_by_active_event($thisYearsEvent[0]['ID']));
             $body_content = "<div class='row'>
                                 <div class='col-xs-12 col-sm-12 col-md-12 col-lg-12'>
                                     <div class='page-header'>
@@ -106,13 +107,80 @@ class ManageController extends Controller
 
     protected function getEventsContent()
     {
+        $event = new EventModel(Application::getInstance()->getDBconnection());
+        $activeEvent = $event->get_active_event();
+        if(empty($activeEvent))
+        {
+            $body_content = "<div class='row'>
+                                <div class='col-xs-1 col-sm-1 col-md-3 col-lg-3'></div>
+                                <div class='col-xs-10 col-sm-10 col-md-6 col-lg-6'>
+                                    <form action='manage/new_event' method='POST' class='form-horizontal' role='form'>
+                                        <div class='form-group'>
+                                            <legend>neuer Event</legend>
+                                        </div>
+                                        <div class='form-group'>
+                                            <label for='Titel' class='col-sm-2 control-label'>Titel:</label>
+                                            <div class='col-sm-10'>
+                                                <input type='text' name='Titel' id='Titel' class='form-control' pattern='[À-žA-Za-z0-9\s]+' required='required'>
+                                            </div>
+                                        </div>
+                                        <div class='form-group'>
+                                            <label for='event_start' class='col-sm-2 control-label'>Start:</label>
+                                            <div class='col-sm-10'>
+                                                <input type='datetime-local' name='event_start' id='event_start' class='form-control' placeholder='TT.MM.YYYY, HH:MM' required='required'>
+                                            </div>
+                                        </div>
+                                        <div class='form-group'>
+                                            <label for='event_ende' class='col-sm-2 control-label'>Ende:</label>
+                                            <div class='col-sm-10'>
+                                                <input type='datetime-local' name='event_ende' id='event_ende' class='form-control' placeholder='TT.MM.YYYY, HH:MM' required='required'>
+                                            </div>
+                                        </div>
+                                        <div class='form-group'>
+                                            <label for='phase1' class='col-sm-2 control-label'>Phase 1:</label>
+                                            <div class='col-sm-10'>
+                                                <input type='datetime-local' name='phase1' id='phase1' class='form-control' placeholder='TT.MM.YYYY, HH:MM' required='required'>
+                                            </div>
+                                        </div>
+                                        <div class='form-group'>
+                                            <label for='phase2' class='col-sm-2 control-label'>Phase 2:</label>
+                                            <div class='col-sm-10'>
+                                                <input type='datetime-local' name='phase2' id='phase2' class='form-control' placeholder='TT.MM.YYYY, HH:MM' required='required'>
+                                            </div>
+                                        </div>
+                                        <div class='form-group'>
+                                            <label for='anmeldeschluss' class='col-sm-3 control-label'>Anmeldeschluss:</label>
+                                            <div class='col-sm-9'>
+                                                <input type='datetime-local' name='anmeldeschluss' id='anmeldeschluss' class='form-control' placeholder='TT.MM.YYYY, HH:MM' required='required'>
+                                            </div>
+                                        </div>
+                                        <div class='checkbox'>
+                                            <label>
+                                                <input name='visible' type='checkbox' title='für den Benutzer bereits sichtbar?'>
+                                                sichtbar
+                                            </label>
+                                        </div>
+                                        <div class='form-group'>
+                                            <div class='col-sm-10 col-sm-offset-2'>
+                                                <button type='submit' class='btn btn-primary'>erstellen</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>";
+        }
+        else
+        {
+
+        }
+
         return array(
             'tab_title' => 'Events',
             'li_class_overview' => '',
             'li_class_events' => 'active',
             'li_class_kurse' => '',
             'li_class_benutzer' => '',
-            'body_content' => ''
+            'body_content' => $body_content
         );
     }
 
@@ -143,5 +211,39 @@ class ManageController extends Controller
     public function settings()
     {
 
+    }
+
+    public function new_event()
+    {
+        if($this->allNewEventFieldsSet())
+        {
+            
+        }
+        else
+        {
+            $this->view->smarty->show_error_message(
+                "Eingabefehler",
+                "Sie haben nicht alle Felder ausgefüllt",
+                "Eingabefehler",
+                "Der Vorgangwurde abgebrochen"
+            );
+        }
+    }
+
+    private function allNewEventFieldsSet()
+    {
+        if(isset($_POST['event_start']) && 
+                isset($_POST['event_ende']) &&
+                isset($_POST['Titel']) &&
+                isset($_POST['phase1']) &&
+                isset($_POST['phase2']) &&
+                isset($_POST['anmeldeschluss']))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }
