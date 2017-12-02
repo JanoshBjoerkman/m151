@@ -31,10 +31,11 @@ class SessionHandler
         session_regenerate_id(true);
     }
 
-    public function login($accountID)
+    public function login($accountID, $is_admin)
     {
         $this->refresh();
         $_SESSION['Account_ID'] = $accountID;
+        $_SESSION['Account_is_admin'] = $is_admin;
     }
 
     public function logout()
@@ -42,5 +43,29 @@ class SessionHandler
         $this->refresh();
         session_unset();
         session_destroy();
+    }
+
+    public function isLoggedIn()
+    {
+        if(isset($_SESSION['Account_ID']) && !empty($_SESSION['Account_ID']))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public function isAdmin()
+    {
+        if(isset($_SESSION['Account_is_admin']) && $_SESSION['Account_is_admin'] == true)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

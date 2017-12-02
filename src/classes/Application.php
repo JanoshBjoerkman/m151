@@ -51,7 +51,7 @@ class Application
             catch(\PDOException $e)
             {
                 $content = array(
-                    'title' => 'Datenbankfehler',
+                    'tab_title' => 'Datenbankfehler',
                     'text' => 'Die Verbindung zur Datenbank konnte nicht hergestellt werden. Bitte wenden Sie sich an den Administrator.'
                 );
                 TemplateEngine::getInstance()->smarty->assign($content);

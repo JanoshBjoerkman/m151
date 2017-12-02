@@ -3,6 +3,7 @@
 namespace M151;
 
 use M151\Http\Request;
+use M151\TemplateEngine;
 
 class Router {
     private static $_routes = [];
@@ -54,8 +55,17 @@ class Router {
                 return $routeInfo;
             }
         }
-        // TODO: 404 template
-        throw new \Exception('No route found for '.$method.'::'.$route);
+
+        // 404 - route not found
+        $content = array(
+            'tab_title' => "404",
+            'h1' => "404 - Die angeforderte Resource wurde nicht gefunden.",
+            'alert_title' => "404",
+            'alert_body' => "404 - Die angeforderte Resource wurde nicht gefunden."
+        );
+        TemplateEngine::getInstance()->smarty->assign($content);
+        TemplateEngine::getInstance()->smarty->display('error_message.html');
+        die();
     }
 
     public static function getRouteController($routeInfo) 

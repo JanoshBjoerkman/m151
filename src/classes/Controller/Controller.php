@@ -52,6 +52,8 @@ class Controller
 
     protected function getProtocol()
     {
+        return 'https';
+        /*
         if(isset($_SERVER['HTTPS']))
         {
             if(\strtoupper($_SERVER['HTTPS']) == 'ON')
@@ -60,5 +62,6 @@ class Controller
             }
         }
         return 'http';
+        */
     }
 }

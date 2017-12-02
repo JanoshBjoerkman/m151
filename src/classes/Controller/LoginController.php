@@ -21,7 +21,7 @@ class LoginController extends Controller
                 $result = $account->select($data, TRUE);
                 if(!empty($result) && password_verify($pw, $result[0]['Passwort']))
                 {
-                    $this->session->login($result[0]['ID']);
+                    $this->session->login($result[0]['ID'], $result[0]['is_admin']);
                     $this->redirect_to("home");
                 }
                 else
