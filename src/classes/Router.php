@@ -60,8 +60,8 @@ class Router {
         $content = array(
             'tab_title' => "404",
             'h1' => "404 - Die angeforderte Resource wurde nicht gefunden.",
-            'alert_title' => "404",
-            'alert_body' => "404 - Die angeforderte Resource wurde nicht gefunden."
+            'alert_title' => $_SERVER['SERVER_NAME'].$req->urlRoute,
+            'alert_body' => "existiert nicht"
         );
         TemplateEngine::getInstance()->smarty->assign($content);
         TemplateEngine::getInstance()->smarty->display('error_message.html');

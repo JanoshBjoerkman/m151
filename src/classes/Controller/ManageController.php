@@ -9,11 +9,14 @@ class ManageController extends Controller
 {
     public function manage_home()
     {
+        $this->session->refresh();
         if($this->session->isLoggedIn() && $this->session->isAdmin())
         {
-            $content = array();
-            $this->view->assign();
-            $this->view->display();
+            $content = array(
+                
+            );
+            $this->view->smarty->assign();
+            $this->view->smarty->display();
         }
         else
         {

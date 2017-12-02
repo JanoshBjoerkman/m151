@@ -46,7 +46,7 @@ Router::get('/logout', LogoutController::class, 'logout');
 Router::get('/register', RegisterController::class, 'register_form');
 Router::post('/register', RegisterController::class, 'try_to_register');
 # manage
-Router::get('/manage', ManageController::class, 'home');
+Router::get('/manage', ManageController::class, 'manage_home');
 
 # Übergebe an Applikation:
 $app = Application::getInstance();
