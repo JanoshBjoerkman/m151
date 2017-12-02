@@ -52,10 +52,12 @@ class Application
             {
                 $content = array(
                     'tab_title' => 'Datenbankfehler',
-                    'text' => 'Die Verbindung zur Datenbank konnte nicht hergestellt werden. Bitte wenden Sie sich an den Administrator.'
+                    'h1' => 'Keine Verbindung zur Datenbank',
+                    'alert_title' => '503',
+                    'alert_body' => 'Die Verbindung zur Datenbank konnte nicht hergestellt werden. Bitte wenden Sie sich an den Administrator.'
                 );
                 TemplateEngine::getInstance()->smarty->assign($content);
-                TemplateEngine::getInstance()->smarty->display('no_db_connection.html');
+                TemplateEngine::getInstance()->smarty->display('error_message.html');
             }
         }
         return $this->dbConnection;
