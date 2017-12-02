@@ -37,7 +37,17 @@ class Controller
 
     protected function redirect_to($url)
     {
-        header('Location: '.$this->getProtocol().'://'.$this->basePath.$url);
+        header('Location: '.$this->getHref($url));
+    }
+
+    protected function getHref($url)
+    {
+        return $this->getBasePathWithProtocol().$url;
+    }
+
+    protected function getBasePathWithProtocol()
+    {
+        return $this->getProtocol().'://'.$this->basePath;
     }
 
     protected function getProtocol()
