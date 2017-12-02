@@ -12,17 +12,7 @@ class HomeController extends Controller
         $this->session->refresh();
         if($this->session->isLoggedIn())
         {
-            // user is logged in
-            if($this->session->isAdmin())
-            {
-                // user is admin
-                $this->redirect_to("manage");
-            }
-            else
-            {
-                // normal user
-                $this->welcomeBack($req);
-            }
+            $this->welcomeBack($req);
         }
         else
         {
@@ -33,16 +23,8 @@ class HomeController extends Controller
 
     protected function welcomeBack(Request $request)
     {
-        $Account_Email = "";
-        $data = array(
-            'ID' => $_SESSION['Account_ID'],
-        );
         $account = new AccountModel(Application::getInstance()->getDBconnection());
-        $result = $account->select($data, TRUE);
-        if(!empty($result))
-        {
-            $Account_Email = $result[0]['Email'];
-        }
+        $Account_Email = $account->get_email_by_id($_SESSION['Account_ID']);
 
         $li_class_kurse = 'active';
         $li_class_meine_kurse = "";

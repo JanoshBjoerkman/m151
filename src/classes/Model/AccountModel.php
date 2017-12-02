@@ -21,4 +21,20 @@ class AccountModel extends Model
     {
         $this->insert($dataDictionary);
     }
+
+    public function get_email_by_id($ID)
+    {
+        $data = array(
+            'ID' => $ID,
+        );
+        $result = $this->select($data, TRUE);
+        if(!empty($result))
+        {
+            return $result[0]['Email'];
+        }
+        else
+        {
+            return "ERROR";
+        }
+    }
 }

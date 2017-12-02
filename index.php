@@ -3,14 +3,12 @@
 use M151\Application;
 use M151\Router;
 use M151\Controller\Controller;
-use M151\Controller\DefaultController;
-use M151\Controller\HomeController;
-use M151\Controller\ModelDemoController;
-use M151\Controller\AjaxDemoController;
-use M151\Controller\RegisterController;
 use M151\Controller\LoginController;
 use M151\Controller\LogoutController;
+use M151\Controller\RegisterController;
+use M151\Controller\HomeController;
 use M151\Controller\ManageController;
+use M151\Controller\AjaxDemoController;
 
 # lade composer autoloader:
 require_once(__DIR__.'/vendor/autoload.php');
@@ -35,7 +33,8 @@ Router::get('/logout', LogoutController::class, 'logout');
 Router::get('/register', RegisterController::class, 'register_form');
 Router::post('/register', RegisterController::class, 'try_to_register');
 # manage
-Router::get('/manage', ManageController::class, 'manage_home');
+Router::get('/manage', ManageController::class, 'manage');
+Router::get('/manage/settings', ManageController::class, 'settings');
 
 # Übergebe an Applikation:
 $app = Application::getInstance();
