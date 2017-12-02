@@ -31,7 +31,7 @@ class SessionHandler
         session_regenerate_id(true);
     }
 
-    public function login($accountID, $is_admin)
+    public function login($accountID, $is_admin = false)
     {
         $this->refresh();
         $_SESSION['Account_ID'] = $accountID;
