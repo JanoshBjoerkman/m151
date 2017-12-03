@@ -100,7 +100,7 @@ class ManageController extends Controller
         }
         else
         {
-            $body_content = $this->view->getEventsContent_has_events();
+            $body_content = $this->view->getEventsContent_has_events($allEvents);
         }
 
         return array(

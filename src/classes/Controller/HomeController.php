@@ -4,12 +4,14 @@ namespace M151\Controller;
 use M151\Http\Request;
 use M151\Application;
 use M151\Model\AccountModel;
+use M151\View\HomeView;
 
 class HomeController extends Controller
 {
     public function home(Request $req)
     {
         $this->session->refresh();
+        $this->view = new HomeView();
         if($this->session->isLoggedIn())
         {
             $this->welcomeBack($req);
@@ -54,8 +56,7 @@ class HomeController extends Controller
             "href_einstellungen" => $this->getHref("home/settings"),
             "href_logout" => $this->getHref("logout")
         );
-        $this->view->smarty->assign($content);
-        $this->view->smarty->display('home.html');
+        $this->view->show_home($content);
     }
 
     protected function entry_point()
@@ -64,8 +65,8 @@ class HomeController extends Controller
             'tab_title' => "Ferienpass",
             'page_header' => "Ferienpass Pfyn"
         );
-        $this->view->smarty->assign($content);
-        $this->view->smarty->display('entry_point.html');
+        $this->view->show_entry_point($content);
+        
     }
 
     public function persons()

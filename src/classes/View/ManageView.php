@@ -103,7 +103,7 @@ class ManageView extends View
         return $body_content;
     }
 
-    public function getEventsContent_has_events()
+    public function getEventsContent_has_events($allEvents)
     {
         return "";
     }
