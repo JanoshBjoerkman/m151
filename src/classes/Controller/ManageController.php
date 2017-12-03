@@ -6,14 +6,16 @@ use M151\Application;
 use M151\Model\AccountModel;
 use M151\Model\EventModel;
 use M151\Model\KursModel;
+use M151\View\ManageView;
 
 class ManageController extends Controller
 {
     public function manage(Request $request)
-    {
+    {    
         $this->session->refresh();
         if($this->session->isLoggedIn() && $this->session->isAdmin())
         {
+            $this->view = new ManageView();
             $account = new AccountModel(Application::getInstance()->getDBconnection());
             $email = $account->get_email_by_id($_SESSION['Account_ID']);
 
@@ -29,29 +31,27 @@ class ManageController extends Controller
 
             if(empty($request->getParam('edit')))
             {
-                $content = array_merge($content, $this->getOverviewContent());
+                $content = array_merge($content, $this->prepareOverviewContent());
             }
             else
             {
                 switch($request->getParam('edit'))
                 {
                     case 'overview':
-                        $content = array_merge($content, $this->getOverviewContent());
+                        $content = array_merge($content, $this->prepareOverviewContent());
                         break;
                     case 'events':
-                        $content = array_merge($content, $this->getEventsContent());
+                        $content = array_merge($content, $this->prepareEventsContent());
                         break;
                     case 'courses':
-                        $content = array_merge($content, $this->getCoursesContent());
+                        $content = array_merge($content, $this->prepareCoursesContent());
                         break;
                     case 'users': 
-                        $content = array_merge($content, $this->getUsersContent());
+                        $content = array_merge($content, $this->prepareUsersContent());
                         break;
                 }            
             }
-
-            $this->view->smarty->assign($content);
-            $this->view->smarty->display('manage_overview.html');
+            $this->view->show_overview($content);
         }
         else
         {
@@ -60,41 +60,23 @@ class ManageController extends Controller
         }
     }
 
-    protected function getOverviewContent()
+    protected function prepareOverviewContent()
     {
-        $body_content = "";
-
-        $event = new EventModel(Application::getInstance()->getDBconnection());
         $year = date("Y");
+        $event = new EventModel(Application::getInstance()->getDBconnection());
         $thisYearsEvent = $event->get_event_by_year(date("{$year}"));
+
         if(empty($thisYearsEvent))
         {
             // no event this year
             $eventlink = $this->getHref("manage?edit=events");
-            $body_content = "<div class='row'>
-                                <div class='col-xs-3 col-sm-3 col-md-4 col-lg-4'></div>
-                                <div class='col-xs-6 col-sm-6 col-md-4 col-lg-4'>
-                                    <h4>kein eingetragener Event für {$year}</h4>
-                                    <a class='btn btn-large btn-block btn-primary' href='{$eventlink}' role='button'>Event erstellen</a>
-                                </div>
-                            </div>";
+            $body_content = $this->view->getOverviewContent_no_event($eventlink);
         }
         else
         {
-            // get this years event title and count courses
-            $title = $thisYearsEvent[0]['Titel'];
             $course = new KursModel(Application::getInstance()->getDBconnection());
             $numberOfCourses = count($course->get_courses_by_event_id($thisYearsEvent[0]['ID']));
-            $visible = ($thisYearsEvent[0]['visible'] == '1') ? 'ja' : 'nein'; 
-            $body_content = "<div class='row'>
-                                <div class='col-xs-12 col-sm-12 col-md-12 col-lg-12'>
-                                    <div class='page-header'>
-                                        <h1>{$title}</h1>
-                                    </div>
-                                    <p>#Kurse: {$numberOfCourses}</p>
-                                    <p>für Benutzer sichtbar: {$visible}</p>
-                                </div>
-                            </div>";
+            $body_content = $this->view->getOverviewContent_has_event($thisYearsEvent, $numberOfCourses);
         }
 
         return array(
@@ -107,73 +89,18 @@ class ManageController extends Controller
         );
     }
 
-    protected function getEventsContent()
+    protected function prepareEventsContent()
     {
         $event = new EventModel(Application::getInstance()->getDBconnection());
         $thisYearsEvent = $event->get_event_by_year(date("Y"));
-        if(empty($thisYearsEvent))
+        $allEvents = $event->select_all();
+        if(empty($thisYearsEvent) && empty($allEvents))
         {
-            $body_content = "<div class='row'>
-                                <div class='col-xs-1 col-sm-1 col-md-3 col-lg-3'></div>
-                                <div class='col-xs-10 col-sm-10 col-md-6 col-lg-6'>
-                                    <form action='manage/new_event' method='POST' class='form-horizontal' role='form'>
-                                        <div class='form-group'>
-                                            <legend>neuer Event</legend>
-                                        </div>
-                                        <div class='form-group'>
-                                            <label for='Titel' class='col-sm-2 control-label'>Titel:</label>
-                                            <div class='col-sm-10'>
-                                                <input type='text' name='Titel' id='Titel' class='form-control' pattern='[À-žA-Za-z0-9\s]+' required='required'>
-                                            </div>
-                                        </div>
-                                        <div class='form-group'>
-                                            <label for='event_start' class='col-sm-2 control-label'>Start:</label>
-                                            <div class='col-sm-10'>
-                                                <input type='datetime-local' name='event_start' id='event_start' class='form-control' placeholder='TT.MM.YYYY, HH:MM' required='required'>
-                                            </div>
-                                        </div>
-                                        <div class='form-group'>
-                                            <label for='event_ende' class='col-sm-2 control-label'>Ende:</label>
-                                            <div class='col-sm-10'>
-                                                <input type='datetime-local' name='event_ende' id='event_ende' class='form-control' placeholder='TT.MM.YYYY, HH:MM' required='required'>
-                                            </div>
-                                        </div>
-                                        <div class='form-group'>
-                                            <label for='phase1' class='col-sm-2 control-label'>Phase 1:</label>
-                                            <div class='col-sm-10'>
-                                                <input type='datetime-local' name='phase1' id='phase1' class='form-control' placeholder='TT.MM.YYYY, HH:MM' required='required'>
-                                            </div>
-                                        </div>
-                                        <div class='form-group'>
-                                            <label for='phase2' class='col-sm-2 control-label'>Phase 2:</label>
-                                            <div class='col-sm-10'>
-                                                <input type='datetime-local' name='phase2' id='phase2' class='form-control' placeholder='TT.MM.YYYY, HH:MM' required='required'>
-                                            </div>
-                                        </div>
-                                        <div class='form-group'>
-                                            <label for='anmeldeschluss' class='col-sm-3 control-label'>Anmeldeschluss:</label>
-                                            <div class='col-sm-9'>
-                                                <input type='datetime-local' name='anmeldeschluss' id='anmeldeschluss' class='form-control' placeholder='TT.MM.YYYY, HH:MM' required='required'>
-                                            </div>
-                                        </div>
-                                        <div class='checkbox'>
-                                            <label>
-                                                <input name='visible' type='checkbox' title='für den Benutzer bereits sichtbar?'>
-                                                sichtbar
-                                            </label>
-                                        </div>
-                                        <div class='form-group'>
-                                            <div class='col-sm-10 col-sm-offset-2'>
-                                                <button type='submit' class='btn btn-primary'>erstellen</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>";
+            $body_content = $this->view->getEventsContent_no_events();
         }
         else
         {
-            $body_content = "";
+            $body_content = $this->view->getEventsContent_has_events();
         }
 
         return array(
@@ -186,7 +113,7 @@ class ManageController extends Controller
         );
     }
 
-    protected function getCoursesContent()
+    protected function prepareCoursesContent()
     {
         return array(
             'tab_title' => 'Kurse',
@@ -198,7 +125,7 @@ class ManageController extends Controller
         );
     }
 
-    protected function getUsersContent()
+    protected function prepareUsersContent()
     {
         return array(
             'tab_title' => 'Benutzer',

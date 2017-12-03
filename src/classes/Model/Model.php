@@ -25,6 +25,17 @@ abstract class Model
         return $result;
     }
 
+    public function select_all()
+    {
+        $query = "SELECT * FROM {$this->tablename()}";
+        $STH = $this->DBH->prepare($query);
+        $result = $STH->execute();
+        if($result)
+        {
+            return $STH->fetchAll(\PDO::FETCH_ASSOC);
+        }
+    }
+
     public function select($dataDictionary, $selectAllColumns, $logic = "AND")
     {
         $columns = $this->prepareColumnNames(array_keys($dataDictionary));
