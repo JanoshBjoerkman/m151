@@ -49,6 +49,8 @@ class ManageController extends Controller
                     case 'users': 
                         $content = array_merge($content, $this->prepareUsersContent());
                         break;
+                    default:
+                        $content = array_merge($content, $this->prepareOverviewContent());
                 }            
             }
             $this->view->show_overview($content);
