@@ -9,7 +9,7 @@ class KursModel extends Model
         return 'Kurs';
     }
 
-    public function get_courses_by_active_event($Event_ID)
+    public function get_courses_by_event_id($Event_ID)
     {
         $data = array(
             'Event_ID' => $Event_ID

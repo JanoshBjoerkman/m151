@@ -65,11 +65,11 @@ class ManageController extends Controller
         $body_content = "";
 
         $event = new EventModel(Application::getInstance()->getDBconnection());
-        $thisYearsEvent = $event->get_event_by_year(date("Y-m-d"));
         $year = date("Y");
+        $thisYearsEvent = $event->get_event_by_year(date("{$year}"));
         if(empty($thisYearsEvent))
         {
-            // no active event
+            // no event this year
             $eventlink = $this->getHref("manage?edit=events");
             $body_content = "<div class='row'>
                                 <div class='col-xs-3 col-sm-3 col-md-4 col-lg-4'></div>
@@ -81,16 +81,18 @@ class ManageController extends Controller
         }
         else
         {
-            // get active event title and count courses
+            // get this years event title and count courses
             $title = $thisYearsEvent[0]['Titel'];
             $course = new KursModel(Application::getInstance()->getDBconnection());
-            $numberOfCourses = count($kurs->get_courses_by_active_event($thisYearsEvent[0]['ID']));
+            $numberOfCourses = count($course->get_courses_by_event_id($thisYearsEvent[0]['ID']));
+            $visible = ($thisYearsEvent[0]['visible'] == '1') ? 'ja' : 'nein'; 
             $body_content = "<div class='row'>
                                 <div class='col-xs-12 col-sm-12 col-md-12 col-lg-12'>
                                     <div class='page-header'>
                                         <h1>{$title}</h1>
                                     </div>
                                     <p>#Kurse: {$numberOfCourses}</p>
+                                    <p>für Benutzer sichtbar: {$visible}</p>
                                 </div>
                             </div>";
         }
@@ -108,8 +110,8 @@ class ManageController extends Controller
     protected function getEventsContent()
     {
         $event = new EventModel(Application::getInstance()->getDBconnection());
-        $activeEvent = $event->get_active_event();
-        if(empty($activeEvent))
+        $thisYearsEvent = $event->get_event_by_year(date("Y"));
+        if(empty($thisYearsEvent))
         {
             $body_content = "<div class='row'>
                                 <div class='col-xs-1 col-sm-1 col-md-3 col-lg-3'></div>
@@ -171,7 +173,7 @@ class ManageController extends Controller
         }
         else
         {
-
+            $body_content = "";
         }
 
         return array(
@@ -217,7 +219,29 @@ class ManageController extends Controller
     {
         if($this->allNewEventFieldsSet())
         {
-            
+            $data = array(
+                'Titel' => $this->escapeInput($_POST['Titel']),
+                'Event_start' => date("Y-m-d H:i:s", strtotime($this->escapeInput($_POST['event_start']))),
+                'Event_ende' => date("Y-m-d H:i:s", strtotime($this->escapeInput($_POST['event_ende']))),
+                'Phase_1' => date("Y-m-d H:i:s", strtotime($this->escapeInput($_POST['phase1']))),
+                'Phase_2' => date("Y-m-d H:i:s", strtotime($this->escapeInput($_POST['phase2']))),
+                'Anmeldeschluss' => date("Y-m-d H:i:s", strtotime($this->escapeInput($_POST['anmeldeschluss']))),
+                'visible' => isset($_POST['visible']) ? '1' : '0'
+            );
+            try
+            {
+                $event = new EventModel(Application::getInstance()->getDBconnection());
+                $event->new_event($data);
+            }
+            catch(\Exception $e)
+            {
+                $this->view->show_error_message(
+                    "Fehler",
+                    "Leider ist etwas schiefgelaufen...",
+                    "Fehler:",
+                    "{$e->getMessage()}"
+                );
+            }                       
         }
         else
         {
