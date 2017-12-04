@@ -25,9 +25,17 @@ abstract class Model
         return $result;
     }
 
-    public function select_all()
+    public function select_all($orderBy = NULL)
     {
-        $query = "SELECT * FROM {$this->tablename()}";
+        $query = "";
+        if($orderBy == NULL)
+        {
+            $query = "SELECT * FROM {$this->tablename()}";
+        }
+        else
+        {
+            $query = "SELECT * FROM {$this->tablename()} ORDER BY {$orderBy}";
+        }
         $STH = $this->DBH->prepare($query);
         $result = $STH->execute();
         if($result)
@@ -36,7 +44,7 @@ abstract class Model
         }
     }
 
-    public function select($dataDictionary, $selectAllColumns, $logic = "AND")
+    public function select($dataDictionary, $selectAllColumns, $logic = "AND", $orderBy = NULL)
     {
         $columns = $this->prepareColumnNames(array_keys($dataDictionary));
         $where = $this->prepareNamedPlaceholdersForWhere(array_keys($dataDictionary), $logic);

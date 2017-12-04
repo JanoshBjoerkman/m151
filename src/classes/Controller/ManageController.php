@@ -53,7 +53,7 @@ class ManageController extends Controller
                         $content = array_merge($content, $this->prepareOverviewContent());
                 }            
             }
-            $this->view->show_overview($content);
+            $this->view->show_manage($content);
         }
         else
         {
@@ -102,7 +102,7 @@ class ManageController extends Controller
         }
         else
         {
-            $body_content = $this->view->getEventsContent_has_events($allEvents);
+            $body_content = $this->view->getEventsContent_has_events($allEvents, $this->getHref("manage/delete_event"));
         }
 
         return array(
