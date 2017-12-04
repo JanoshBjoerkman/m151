@@ -137,7 +137,7 @@ class ManageView extends View
             $phase2 = date("d.m.Y H:i", strtotime($eventData['Phase_2']));
             $anmeldeschluss = date("d.m.Y H:i", strtotime($eventData['Anmeldeschluss']));
             $visible = ($eventData['visible'] == '1') ? 'ja' : 'nein'; 
-            $table_body .= "<tr id='{$ID}'>
+            $table_body .= "<tr>
                                 <td>{$eventData['Titel']}</td>
                                 <td>{$start}</td>
                                 <td>{$ende}</td>
@@ -146,7 +146,7 @@ class ManageView extends View
                                 <td>{$anmeldeschluss}</td>
                                 <td>{$visible}</td>
                                 <td>
-                                    <button type='button' class='btn btn-danger'>
+                                    <button type='button' class='btn btn-danger' onclick='delete_event({$ID})'>
                                         <i class='fa fa-trash-o' aria-hidden='true'></i>
                                     </button>
                                 </td>

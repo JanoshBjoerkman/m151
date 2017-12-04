@@ -40,6 +40,18 @@ class Controller
         header('Location: '.$this->getHref($url));
     }
 
+    protected function adminCheck()
+    {
+        if($this->session->isLoggedIn() && $this->session->isAdmin())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     protected function getHref($url)
     {
         return $this->getBasePathWithProtocol().$url;

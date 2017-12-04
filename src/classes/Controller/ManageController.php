@@ -146,7 +146,8 @@ class ManageController extends Controller
 
     public function new_event()
     {
-        if($this->allNewEventFieldsSet())
+        $this->session->refresh();
+        if($this->allNewEventFieldsSet() && $this->adminCheck())
         {
             $data = array(
                 'Titel' => $this->escapeInput($_POST['Titel']),
@@ -183,7 +184,7 @@ class ManageController extends Controller
         }
     }
 
-    private function allNewEventFieldsSet()
+    private function allNeewEventFieldsSet()
     {
         if(isset($_POST['event_start']) && 
                 isset($_POST['event_ende']) &&
@@ -197,6 +198,22 @@ class ManageController extends Controller
         else
         {
             return false;
+        }
+    }
+
+    public function delete_event()
+    {
+        $this->session->refresh();
+        if($this->adminCheck())
+        {
+            echo $_POST['ID'];
+        }
+        else
+        {
+            $this->view->show_error_message("ur not allowed to delete nigga",
+            "Huroensohn",
+            "Ich mache Party",
+            "auf deinem Grab");
         }
     }
 }
