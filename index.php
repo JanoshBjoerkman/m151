@@ -8,6 +8,7 @@ use M151\Controller\LogoutController;
 use M151\Controller\RegisterController;
 use M151\Controller\HomeController;
 use M151\Controller\ManageController;
+use M151\Controller\ResourceController;
 use M151\Controller\AjaxDemoController;
 
 # lade composer autoloader:
@@ -36,6 +37,8 @@ Router::post('/register', RegisterController::class, 'try_to_register');
 Router::get('/manage', ManageController::class, 'manage');
 Router::get('/manage/settings', ManageController::class, 'settings');
 Router::post('/manage/new_event', ManageController::class, 'new_event');
+# resources
+Router::get('/resources/js/script.js', ResourceController::class, 'own_js');
 
 # Übergebe an Applikation:
 $app = Application::getInstance();
