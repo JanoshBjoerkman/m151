@@ -38,6 +38,7 @@ Router::get('/manage', ManageController::class, 'manage');
 Router::get('/manage/settings', ManageController::class, 'settings');
 Router::post('/manage/new_event', ManageController::class, 'new_event');
 Router::post('/manage/delete_event', ManageController::class, 'delete_event');
+Router::post('/manage/refresh_events_table', ManageController::class, 'refresh_events_table');
 # resources
 Router::get('/resources/js/script.js', ResourceController::class, 'own_js');
 

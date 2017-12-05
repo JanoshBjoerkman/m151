@@ -51,10 +51,18 @@ class ManageView extends View
         return $body_content;
     }
 
-    public function getEventsContent_has_events($allEvents, $deleteLink)
+    public function getEventsContent_has_events($allEvents)
+    {
+        $table_rows = $this->getEventsTableRows($allEvents);
+        $this->view->assign('table_rows', $table_rows);
+        $body_content = $this->view->fetch($this->templateDir."events_table.html");
+        $body_content .= $this->getCreateNewEventTable();
+        return $body_content;
+    }
+
+    public function getEventsTableRows($allEvents)
     {
         $table_rows = "";
-        // generate rows for table
         foreach($allEvents as $eventKey => $eventData)
         {
             $visible = ($eventData['visible'] == '1') ? 'ja' : 'nein';
@@ -70,11 +78,7 @@ class ManageView extends View
             );           
             $this->view->assign($row);
             $table_rows .= $this->view->fetch($this->templateDir."events_table_row.html");
-            
         }
-        $this->view->assign('table_rows', $table_rows);
-        $body_content = $this->view->fetch($this->templateDir."events_table.html");
-        $body_content .= $this->getCreateNewEventTable();
-        return $body_content;
+        return $table_rows;
     }
 }

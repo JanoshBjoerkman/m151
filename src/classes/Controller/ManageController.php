@@ -62,7 +62,7 @@ class ManageController extends Controller
         }
     }
 
-    protected function prepareOverviewContent()
+    private function prepareOverviewContent()
     {
         $year = date("Y");
         $event = new EventModel(Application::getInstance()->getDBconnection());
@@ -91,7 +91,7 @@ class ManageController extends Controller
         );
     }
 
-    protected function prepareEventsContent()
+    private function prepareEventsContent()
     {
         $event = new EventModel(Application::getInstance()->getDBconnection());
         $thisYearsEvent = $event->get_event_by_year(date("Y"));
@@ -102,7 +102,7 @@ class ManageController extends Controller
         }
         else
         {
-            $body_content = $this->view->getEventsContent_has_events($allEvents, $this->getHref("manage/delete_event"));
+            $body_content = $this->view->getEventsContent_has_events($allEvents);
         }
 
         return array(
@@ -115,7 +115,7 @@ class ManageController extends Controller
         );
     }
 
-    protected function prepareCoursesContent()
+    private function prepareCoursesContent()
     {
         return array(
             'tab_title' => 'Kurse',
@@ -127,7 +127,7 @@ class ManageController extends Controller
         );
     }
 
-    protected function prepareUsersContent()
+    private function prepareUsersContent()
     {
         return array(
             'tab_title' => 'Benutzer',
@@ -220,7 +220,27 @@ class ManageController extends Controller
         if($this->adminAndLoggedInCheck())
         {
             // has to be admin to delete
-            echo $_POST['ID'];
+            $event = new EventModel(Application::getInstance()->getDBconnection());
+            $where = array(
+                'ID' => $_POST['ID']
+            );
+            if($event->delete($where))
+            {
+                echo "TRUE";
+            }
+            else
+            {
+                echo "FALSE";
+            }
         }
+    }
+
+    public function refresh_events_table()
+    {
+        $this->session->refresh();
+        $this->view = new ManageView();
+        $event = new EventModel(Application::getInstance()->getDBconnection());
+        $allEvents = $event->select_all();
+        echo $this->view->getEventsTableRows($allEvents);
     }
 }

@@ -25,6 +25,15 @@ abstract class Model
         return $result;
     }
 
+    public function delete($data, $logic = "AND")
+    {
+        $where = $this->prepareNamedPlaceholdersForWhere(array_keys($data), $logic);
+        $query = "DELETE FROM {$this->tablename()} WHERE {$where}";
+        $STH = $this->DBH->prepare($query);
+        $result = $STH->execute($data);
+        return $result;
+    }
+
     public function select_all($orderBy = NULL)
     {
         $query = "";
