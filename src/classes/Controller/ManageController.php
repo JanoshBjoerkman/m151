@@ -5,7 +5,7 @@ use M151\Http\Request;
 use M151\Application;
 use M151\Model\AccountModel;
 use M151\Model\EventModel;
-use M151\Model\KursModel;
+use M151\Model\CourseModel;
 use M151\View\ManageView;
 
 class ManageController extends Controller
@@ -76,7 +76,7 @@ class ManageController extends Controller
         }
         else
         {
-            $course = new KursModel(Application::getInstance()->getDBconnection());
+            $course = new CourseModel(Application::getInstance()->getDBconnection());
             $numberOfCourses = count($course->get_courses_by_event_id($thisYearsEvent[0]['ID']));
             $body_content = $this->view->getOverviewContent_has_event($thisYearsEvent, $numberOfCourses);
         }
@@ -117,13 +117,17 @@ class ManageController extends Controller
 
     private function prepareCoursesContent()
     {
+        /*$course = new CourseModel(Application::getInstance()->getDBconnection());
+        $allCourses = $course->select_all();*/
+        $this->view = new ManageView(); 
+        $body_content = $this->view->getCourses_no_courses();
         return array(
             'tab_title' => 'Kurse',
             'li_class_overview' => '',
             'li_class_events' => '',
             'li_class_kurse' => 'active',
             'li_class_benutzer' => '',
-            'body_content' => ''
+            'body_content' => $body_content
         );
     }
 
@@ -242,5 +246,10 @@ class ManageController extends Controller
         $event = new EventModel(Application::getInstance()->getDBconnection());
         $allEvents = $event->select_all();
         echo $this->view->getEventsTableRows($allEvents);
+    }
+
+    public function new_course()
+    {
+        
     }
 }

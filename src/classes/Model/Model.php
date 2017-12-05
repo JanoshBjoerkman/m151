@@ -53,7 +53,7 @@ abstract class Model
         }
     }
 
-    public function select($dataDictionary, $selectAllColumns, $logic = "AND", $orderBy = NULL)
+    public function select($dataDictionary, $selectAllColumns, $logic = "AND", $orderBy = "ID")
     {
         $columns = $this->prepareColumnNames(array_keys($dataDictionary));
         $where = $this->prepareNamedPlaceholdersForWhere(array_keys($dataDictionary), $logic);
@@ -61,11 +61,11 @@ abstract class Model
         $query = "";
         if($selectAllColumns)
         {
-            $query = "SELECT * FROM {$this->tablename()} WHERE {$where}";
+            $query = "SELECT * FROM {$this->tablename()} WHERE {$where} ORDER BY {$orderBy}";
         }
         else
         {
-            $query = "SELECT {$columns} FROM {$this->tablename()} WHERE {$where}";
+            $query = "SELECT {$columns} FROM {$this->tablename()} WHERE {$where} ORDER BY {$orderBy}";
         }
 
         $STH = $this->DBH->prepare($query);

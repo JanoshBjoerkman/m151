@@ -2,7 +2,7 @@
 
 namespace M151\Model;
 
-class KursModel extends Model
+class CourseModel extends Model
 {
     public function tablename()
     {

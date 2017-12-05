@@ -40,7 +40,7 @@ class ManageView extends View
         return $this->view->fetch($this->templateDir."overview_has_event.html");;
     }
 
-    private function getCreateNewEventTable()
+    public function getCreateNewEventTable()
     {
         return $this->view->fetch($this->templateDir."events_new_event.html");
     }
@@ -80,5 +80,10 @@ class ManageView extends View
             $table_rows .= $this->view->fetch($this->templateDir."events_table_row.html");
         }
         return $table_rows;
+    }
+
+    public function getCourses_no_courses()
+    {
+        return $this->view->fetch($this->templateDir."courses_new_course.html");
     }
 }
