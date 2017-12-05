@@ -147,7 +147,7 @@ class ManageController extends Controller
     public function new_event()
     {
         $this->session->refresh();
-        if($this->allNewEventFieldsSet() && $this->adminCheck())
+        if($this->allNewEventFieldsSet() && $this->adminAndLoggedInCheck())
         {
             $data = array(
                 'Titel' => $this->escapeInput($_POST['Titel']),
@@ -204,16 +204,10 @@ class ManageController extends Controller
     public function delete_event()
     {
         $this->session->refresh();
-        if($this->adminCheck())
+        if($this->adminAndLoggedInCheck())
         {
+            // has to be admin to delete
             echo $_POST['ID'];
-        }
-        else
-        {
-            $this->view->show_error_message("ur not allowed to delete nigga",
-            "Huroensohn",
-            "Ich mache Party",
-            "auf deinem Grab");
         }
     }
 }

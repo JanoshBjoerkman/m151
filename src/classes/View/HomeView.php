@@ -3,6 +3,13 @@ namespace M151\View;
 
 class HomeView extends View
 {
+    public $templateDir;
+
+    public function __construct()
+    {
+        parent::__construct("home/");
+    }
+
     public function show_home($content)
     {
         $this->view->assign($content);

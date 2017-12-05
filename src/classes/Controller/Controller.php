@@ -40,7 +40,7 @@ class Controller
         header('Location: '.$this->getHref($url));
     }
 
-    protected function adminCheck()
+    protected function adminAndLoggedInCheck()
     {
         if($this->session->isLoggedIn() && $this->session->isAdmin())
         {
