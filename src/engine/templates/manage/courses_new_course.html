@@ -4,7 +4,7 @@
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <h3 class="panel-title">
-                    Kurs hinzufügen <i class="btn btn-xs fa fa-plus-square fa-lg pull-right" aria-hidden="true" data-toggle="collapse" data-target="#collapse-create-new-course" href="#collapse-create-new-course" class="collapsed"></i>
+                    Kurs hinzufügen <i class="btn btn-xs fa fa-plus-square  pull-right" aria-hidden="true" data-toggle="collapse" data-target="#collapse-create-new-course" href="#collapse-create-new-course" class="collapsed"></i>
                 </h3>
             </div>
             <div id="collapse-create-new-course" class="panel-collapse collapse">
@@ -20,19 +20,28 @@
                         </div>
                         <div class="form-group">
                             <label for="treffpunk">Treffpunk</label>
-                            <input type="text" class="form-control" id="treffpunk" placeholder="Treffpunk" required>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-map-marker  fa-fw" aria-hidden="true"></i></span>
+                                <input type="text" class="form-control" id="treffpunk" placeholder="Treffpunk" required>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                 <div class="form-group">
                                     <label for="teilnehmer_min">Teilnehmer min.</label>
-                                    <input type="number" name="teilnehmer_min" id="teilnehmer_min" class="form-control" min="0" step="1">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-users  fa-fw" aria-hidden="true"></i></span>
+                                        <input type="number" name="teilnehmer_min" id="teilnehmer_min" class="form-control" min="0" step="1">
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                 <div class="form-group">
                                     <label for="teilnehmer_max">Teilnehmer max.</label>
-                                    <input type="number" name="teilnehmer_max" id="teilnehmer_max" class="form-control" min="0" step="1">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-users  fa-fw" aria-hidden="true"></i></span>
+                                        <input type="number" name="teilnehmer_max" id="teilnehmer_max" class="form-control" min="0" step="1">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -40,15 +49,25 @@
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                 <div class="form-group">
                                     <label for="preis_mitglieder">Preis Mitglieder:</label>
-                                    <input type="number" name="preis_mitglieder" id="preis_mitglieder" class="form-control" min="0" step="1">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-money  fa-fw" aria-hidden="true"></i></span>
+                                        <input type="number" name="preis_mitglieder" id="preis_mitglieder" class="form-control" min="0" step="1">
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                 <div class="form-group">
                                     <label for="preis_nichtmitglieder">Preis Nichtmitglieder:</label>
-                                    <input type="number" name="preis_nichtmitglieder" id="preis_nichtmitglieder" class="form-control" min="0" step="1">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-money  fa-fw" aria-hidden="true"></i></span>
+                                        <input type="number" name="preis_nichtmitglieder" id="preis_nichtmitglieder" class="form-control" min="0" step="1">
+                                    </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="besonderes">Besonderes</label>
+                            <textarea class="form-control" rows="4" id="besonderes" required></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary">erstellen</button>
                     </form>
