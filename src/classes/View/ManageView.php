@@ -74,7 +74,7 @@ class ManageView extends View
         }
         $this->view->assign('table_rows', $table_rows);
         $body_content = $this->view->fetch($this->templateDir."events_table.html");
-        $createNewEvent = $this->getCreateNewEventTable();
+        $body_content .= $this->getCreateNewEventTable();
         return $body_content;
     }
 }

@@ -33,6 +33,6 @@ class EventModel extends Model
 
     public function new_event($data)
     {
-        $this->insert($data);
+        return $this->insert($data);
     }
 }

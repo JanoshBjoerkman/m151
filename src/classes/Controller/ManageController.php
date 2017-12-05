@@ -161,7 +161,20 @@ class ManageController extends Controller
             try
             {
                 $event = new EventModel(Application::getInstance()->getDBconnection());
-                $event->new_event($data);
+                $result = $event->new_event($data);
+                if($result)
+                {
+                    $this->redirect_to("manage?edit=events");
+                }
+                else
+                {
+                    $this->view->show_error_message(
+                        "Fehler",
+                        "Leider ist etwas schiefgelaufen...",
+                        "Fehler:",
+                        "{$e->getMessage()}"
+                    );
+                }
             }
             catch(\Exception $e)
             {
@@ -184,7 +197,7 @@ class ManageController extends Controller
         }
     }
 
-    private function allNeewEventFieldsSet()
+    private function allNewEventFieldsSet()
     {
         if(isset($_POST['event_start']) && 
                 isset($_POST['event_ende']) &&
