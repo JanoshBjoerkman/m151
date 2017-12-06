@@ -11,12 +11,15 @@
                 <div class="panel-body">
                     <form action="manage/new_course" method="POST" role="form">
                         <div class="form-group">
+                            {$events_dropdown}
+                        </div>
+                        <div class="form-group">
                             <label for="name">Name</label>
                             <input type="text" class="form-control" id="name" placeholder="Name" required>
                         </div>
                         <div class="form-group">
                             <label for="beschreibung">Beschreibung</label>
-                            <textarea class="form-control" rows="5" id="beschreibung" required></textarea>
+                            <textarea class="form-control" rows="5" id="beschreibung" placeholder="Text" required></textarea>
                         </div>
                         <div class="form-group">
                             <label for="treffpunk">Treffpunk</label>
@@ -30,7 +33,7 @@
                                 <div class="form-group">
                                     <label for="teilnehmer_min">Teilnehmer min.</label>
                                     <div class="input-group">
-                                        <span class="input-group-addon"><i class="fa fa-users  fa-fw" aria-hidden="true"></i></span>
+                                        <span class="input-group-addon"><i class="fa fa-user  fa-fw" aria-hidden="true"></i></span>
                                         <input type="number" name="teilnehmer_min" id="teilnehmer_min" class="form-control" min="0" step="1">
                                     </div>
                                 </div>
@@ -51,7 +54,7 @@
                                     <label for="preis_mitglieder">Preis Mitglieder:</label>
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-money  fa-fw" aria-hidden="true"></i></span>
-                                        <input type="number" name="preis_mitglieder" id="preis_mitglieder" class="form-control" min="0" step="1">
+                                        <input type="number" name="preis_mitglieder" id="preis_mitglieder" class="form-control" min="0" pattern="[0-9]+(\\.[0-9][0-9]?)?" step="0.05">
                                     </div>
                                 </div>
                             </div>
@@ -60,7 +63,7 @@
                                     <label for="preis_nichtmitglieder">Preis Nichtmitglieder:</label>
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-money  fa-fw" aria-hidden="true"></i></span>
-                                        <input type="number" name="preis_nichtmitglieder" id="preis_nichtmitglieder" class="form-control" min="0" step="1">
+                                        <input type="number" name="preis_nichtmitglieder" id="preis_nichtmitglieder" class="form-control" min="0" pattern="[0-9]+(\\.[0-9][0-9]?)?" step="0.05">
                                     </div>
                                 </div>
                             </div>

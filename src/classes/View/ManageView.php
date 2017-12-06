@@ -82,8 +82,32 @@ class ManageView extends View
         return $table_rows;
     }
 
-    public function getCourses_no_courses()
+    public function getCourses_no_courses($events)
     {
+        $events_dropdown = $this->getEventsDropdown($events);
+        $content = array(
+            'events_dropdown' => $events_dropdown
+        );
+        $this->view->assign($content);
         return $this->view->fetch($this->templateDir."courses_new_course.html");
+    }
+
+    public function getEventsDropdown($events)
+    {
+        $events_dropdown_items = "";
+        foreach($events as $key => $data)
+        {
+            $event_title = $data['Titel'];
+            $event_id = $data['ID'];
+            $this->view->assign(
+                array(
+                    'event_title' => $event_title,
+                    'event_id' => $event_id
+                )
+            );
+            $events_dropdown_items .= $this->view->fetch($this->templateDir."courses_events_dropdown_item.html");
+        }
+        $this->view->assign('events_dropdown_items', $events_dropdown_items);
+        return $this->view->fetch($this->templateDir.'courses_events_dropdown.html');
     }
 }

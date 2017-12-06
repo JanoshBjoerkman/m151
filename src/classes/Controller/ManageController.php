@@ -117,10 +117,12 @@ class ManageController extends Controller
 
     private function prepareCoursesContent()
     {
+        $event = new EventModel(Application::getInstance()->getDBconnection());
+        $events = $event->select_all("Titel ASC");
         /*$course = new CourseModel(Application::getInstance()->getDBconnection());
         $allCourses = $course->select_all();*/
-        $this->view = new ManageView(); 
-        $body_content = $this->view->getCourses_no_courses();
+        $this->view = new ManageView();
+        $body_content = $this->view->getCourses_no_courses($events);
         return array(
             'tab_title' => 'Kurse',
             'li_class_overview' => '',
