@@ -120,10 +120,19 @@ class ManageController extends Controller
     {
         $event = new EventModel(Application::getInstance()->getDBconnection());
         $events = $event->select_all("Titel ASC");
-        /*$course = new CourseModel(Application::getInstance()->getDBconnection());
-        $allCourses = $course->select_all();*/
-        $this->view = new ManageView();
-        $body_content = $this->view->getCourses_no_courses($events);
+        $class = new ClassModel(Application::getInstance()->getDBconnection());
+        $allClasses = $class->select_all();
+        $body_content = "";
+        if(empty($events) || empty($allClasses))
+        {
+            // user shouldn't be able to create courses if there isn't any event
+            $body_content = "Bitte erstellen Sie zuerst einen Event und stellen Sie sicher, dass alle Klassen in der Datenbank definiert sind.";
+        }
+        else
+        {
+            $this->view = new ManageView();
+            $body_content = $this->view->getCourses_no_courses($events, $allClasses);
+        }
         return array(
             'tab_title' => 'Kurse',
             'li_class_overview' => '',
@@ -151,7 +160,7 @@ class ManageController extends Controller
 
     }
 
-    public function new_event()
+    public function create_new_event()
     {
         $this->session->refresh();
         if($this->allNewEventFieldsSet() && $this->adminAndLoggedInCheck())
@@ -245,24 +254,34 @@ class ManageController extends Controller
     public function refresh_events_table()
     {
         $this->session->refresh();
-        $this->view = new ManageView();
-        $event = new EventModel(Application::getInstance()->getDBconnection());
-        $allEvents = $event->select_all();
-        echo $this->view->getEventsTableRows($allEvents);
+        if($this->adminAndLoggedInCheck())
+        {
+            $this->view = new ManageView();
+            $event = new EventModel(Application::getInstance()->getDBconnection());
+            $allEvents = $event->select_all();
+            echo $this->view->getEventsTableRows($allEvents);
+        }
     }
 
-    public function new_course()
+    public function create_new_course()
     {
-        
+        $this->session->refresh();
+        if($this->adminAndLoggedInCheck())
+        {
+            // TODO: insert new course in db
+        }
     }
 
     public function add_course_day()
     {
         $this->session->refresh();
-        $next_course_day_id = $_POST['next_course_day_id'];
-        $class = new ClassModel(Application::getInstance()->getDBconnection());
-        $allClasses = $class->select_all();
-        $this->view = new ManageView();
-        echo $this->view->getCourseDay($allClasses, $next_course_day_id);
+        if($this->adminAndLoggedInCheck())
+        {
+            $next_course_day_id = $_POST['next_course_day_id'];
+            $class = new ClassModel(Application::getInstance()->getDBconnection());
+            $allClasses = $class->select_all();
+            $this->view = new ManageView();
+            echo $this->view->getCourseDay($allClasses, $next_course_day_id);
+        }
     }
 }

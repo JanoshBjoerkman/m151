@@ -11,10 +11,12 @@ $(document).ready(function() {
 
 function remove_course_day() {
     var course_days = $("*[id^='course_day_panel-']").length;
-    var last_course_day_panel = '#course_day_panel-' + course_days;
-    $(last_course_day_panel).hide('slow', function() {
-        $(last_course_day_panel).remove();
-    });
+    if (course_days > 1) {
+        var last_course_day_panel = '#course_day_panel-' + course_days;
+        $(last_course_day_panel).hide('slow', function() {
+            $(last_course_day_panel).remove();
+        });
+    }
 }
 
 function add_course_day() {
