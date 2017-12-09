@@ -86,7 +86,7 @@ class ManageView extends View
     {
         $events_dropdown = $this->getEventsDropdown($events);
         $content = array(
-            'events_dropdown' => $events_dropdown
+            'events_dropdown' => $events_dropdown,
         );
         $this->view->assign($content);
         return $this->view->fetch($this->templateDir."courses_new_course.html");
@@ -101,13 +101,47 @@ class ManageView extends View
             $event_id = $data['ID'];
             $this->view->assign(
                 array(
-                    'event_title' => $event_title,
-                    'event_id' => $event_id
+                    'option_title' => $event_title,
+                    'option_id' => $event_id
                 )
             );
-            $events_dropdown_items .= $this->view->fetch($this->templateDir."courses_events_dropdown_item.html");
+            $events_dropdown_items .= $this->view->fetch($this->templateDir."dropdown_item.html");
         }
-        $this->view->assign('events_dropdown_items', $events_dropdown_items);
-        return $this->view->fetch($this->templateDir.'courses_events_dropdown.html');
+        $this->view->assign(
+            array(
+                'dropdown_title' => 'Event:',
+                'select_id' => 'events_dropdown',
+                'dropdown_items' => $events_dropdown_items
+        ));
+        return $this->view->fetch($this->templateDir.'dropdown.html');
+    }
+
+    public function getCourseDay($classes, $id)
+    {
+        $class_dropdown_items = "";
+        foreach($classes as $key => $data)
+        {
+            $class = $data['Klassenbezeichnung'];
+            $ID = $data['ID'];
+            $this->view->assign(
+                array(
+                    'option_id' => $ID,
+                    'option_title' => $class
+            ));
+            $class_dropdown_items .= $this->view->fetch($this->templateDir."dropdown_item.html");
+        }
+        $this->view->assign(
+            array(
+                'dropdown_title' => 'ab:',
+                'select_id' => 'dropdown_class',
+                'dropdown_items' => $class_dropdown_items
+        ));
+        $class_dropdown = $this->view->fetch($this->templateDir.'dropdown.html');
+        $this->view->assign(array(
+            'course_day_panel_id' => $id,
+            'input_id' => $id,
+            'class_dropdown' => $class_dropdown   
+        ));
+        return $this->view->fetch($this->templateDir."courses_course_day.html");
     }
 }

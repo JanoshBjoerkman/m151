@@ -6,6 +6,7 @@ use M151\Application;
 use M151\Model\AccountModel;
 use M151\Model\EventModel;
 use M151\Model\CourseModel;
+use M151\Model\ClassModel;
 use M151\View\ManageView;
 
 class ManageController extends Controller
@@ -253,5 +254,15 @@ class ManageController extends Controller
     public function new_course()
     {
         
+    }
+
+    public function add_course_day()
+    {
+        $this->session->refresh();
+        $next_course_day_id = $_POST['next_course_day_id'];
+        $class = new ClassModel(Application::getInstance()->getDBconnection());
+        $allClasses = $class->select_all();
+        $this->view = new ManageView();
+        echo $this->view->getCourseDay($allClasses, $next_course_day_id);
     }
 }

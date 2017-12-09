@@ -54,7 +54,7 @@
                                     <label for="preis_mitglieder">Preis Mitglieder:</label>
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-money  fa-fw" aria-hidden="true"></i></span>
-                                        <input type="number" name="preis_mitglieder" id="preis_mitglieder" class="form-control" min="0" pattern="[0-9]+(\\.[0-9][0-9]?)?" step="0.05">
+                                        <input type="number" name="preis_mitglieder" id="preis_mitglieder" class="form-control" min="0" pattern="[0-9]+(\\.[0-9][0-9]?)?" step="0.05" required>
                                     </div>
                                 </div>
                             </div>
@@ -63,14 +63,23 @@
                                     <label for="preis_nichtmitglieder">Preis Nichtmitglieder:</label>
                                     <div class="input-group">
                                         <span class="input-group-addon"><i class="fa fa-money  fa-fw" aria-hidden="true"></i></span>
-                                        <input type="number" name="preis_nichtmitglieder" id="preis_nichtmitglieder" class="form-control" min="0" pattern="[0-9]+(\\.[0-9][0-9]?)?" step="0.05">
+                                        <input type="number" name="preis_nichtmitglieder" id="preis_nichtmitglieder" class="form-control" min="0" pattern="[0-9]+(\\.[0-9][0-9]?)?" step="0.05" required>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="besonderes">Besonderes</label>
-                            <textarea class="form-control" rows="4" id="besonderes" required></textarea>
+                            <textarea class="form-control" rows="4" id="besonderes" placeholder="Text" required></textarea>
+                        </div>
+                        <div class="page-header">
+                            <h4>
+                                Kurstage
+                                <i class="btn btn-xs fa fa-minus-square fa-lg" id="remove_course_day" aria-hidden="true"></i>
+                                <i class="btn btn-xs fa fa-plus-square fa-lg" id="add_course_day" aria-hidden="true"></i>
+                            </h4>
+                        </div>
+                        <div id="course_days">
                         </div>
                         <button type="submit" class="btn btn-primary">erstellen</button>
                     </form>

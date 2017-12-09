@@ -1,0 +1,29 @@
+<div class="panel panel-default" id="course_day_panel-{$course_day_panel_id}">
+    <div class="panel-body">
+        <div class="form-group">
+            {$class_dropdown}
+        </div>
+        <div class="row">
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                <div class="form-group">
+                    <label for="course_day_begin-{$input_id}">Begin</label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-calendar  fa-fw" aria-hidden="true"></i></span>
+                        <input type="datetime-local" class="form-control" name="course_day_begin-{$input_id}" id="course_day_begin-{$input_id}" placeholder='TT.MM.YYYY, HH:MM' required>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                <div class="form-group">
+                    <label for="course_day_end-{$input_id}">Ende</label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-calendar  fa-fw" aria-hidden="true"></i></span>
+                        <input type="datetime-local" class="form-control" name="course_day_end-{$input_id}" id="course_day_end-{$input_id}" placeholder='TT.MM.YYYY, HH:MM' required>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

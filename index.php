@@ -40,6 +40,7 @@ Router::post('/manage/new_event', ManageController::class, 'new_event');
 Router::post('/manage/delete_event', ManageController::class, 'delete_event');
 Router::post('/manage/refresh_events_table', ManageController::class, 'refresh_events_table');
 Router::post('/manage/new_course', ManageController::class, 'new_course');
+Router::post('/manage/add_course_day', ManageController::class, 'add_course_day');
 # resources
 Router::get('/resources/js/script.js', ResourceController::class, 'own_js');
 
