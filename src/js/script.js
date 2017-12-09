@@ -10,24 +10,25 @@ $(document).ready(function() {
 });
 
 function remove_course_day() {
-    alert('remove clicked');
+    var course_days = $("*[id^='course_day_panel-']").length;
+    var last_course_day_panel = '#course_day_panel-' + course_days;
+    $(last_course_day_panel).hide('slow', function() {
+        $(last_course_day_panel).remove();
+    });
 }
 
 function add_course_day() {
-    var rows = $('#course_days .row').length;
-    var next_id;
-    if (rows == 0) {
-        next_id = 1;
-    } else {
-        next_id = (rows / 3) + 1;
-    }
+    var course_days = $("*[id^='course_day_panel-']").length;
+    var next_id = course_days + 1;
     $request = $.ajax({
         type: "POST",
         url: "manage/add_course_day",
         data: { next_course_day_id: next_id }
     });
     $request.done(function(response, textStatus, jqXHR) {
-        $('#course_days').append(response);
+        var new_day = $(response).hide();
+        $('#course_days').append(new_day);
+        new_day.show('slow');
     });
 }
 
