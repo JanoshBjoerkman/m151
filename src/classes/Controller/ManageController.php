@@ -66,21 +66,20 @@ class ManageController extends Controller
 
     private function prepareOverviewContent()
     {
-        $year = date("Y");
         $event = new EventModel(Application::getInstance()->getDBconnection());
-        $thisYearsEvent = $event->get_event_by_year(date("{$year}"));
+        $next_event = $event->select_all("Event_start ASC");
 
-        if(empty($thisYearsEvent))
+        if(empty($next_event))
         {
-            // no event this year
+            // no events
             $eventlink = $this->getHref("manage?edit=events");
             $body_content = $this->view->getOverviewContent_no_event($eventlink);
         }
         else
         {
             $course = new CourseModel(Application::getInstance()->getDBconnection());
-            $numberOfCourses = count($course->get_courses_by_event_id($thisYearsEvent[0]['ID']));
-            $body_content = $this->view->getOverviewContent_has_event($thisYearsEvent, $numberOfCourses);
+            $numberOfCourses = count($course->get_courses_by_event_id($next_event[0]['ID']));
+            $body_content = $this->view->getOverviewContent_has_event($next_event, $numberOfCourses);
         }
 
         return array(
