@@ -6,6 +6,7 @@ use M151\Application;
 use M151\Model\AccountModel;
 use M151\Model\EventModel;
 use M151\Model\CourseModel;
+use M151\Model\CourseDayModel;
 use M151\Model\ClassModel;
 use M151\View\ManageView;
 
@@ -204,11 +205,11 @@ class ManageController extends Controller
         }
         else
         {
-            $this->view->smarty->show_error_message(
+            $this->view->show_error_message(
                 "Eingabefehler",
                 "Sie haben nicht alle Felder ausgefüllt",
                 "Eingabefehler",
-                "Der Vorgangwurde abgebrochen"
+                "Der Vorgang wurde abgebrochen"
             );
         }
     }
@@ -268,8 +269,118 @@ class ManageController extends Controller
         $this->session->refresh();
         if($this->adminAndLoggedInCheck())
         {
-            // TODO: insert new course in db
+            if($this->validateNewcourse())
+            {
+                try
+                {
+                    // get current event ID
+                    $event = new EventModel(Application::getInstance()->getDBconnection());
+                    $query = array(
+                        'Titel' => $_POST['events_dropdown']
+                    );
+                    $result = $event->select($query, TRUE);
+
+                    // prepare data for table "Kurs"
+                    $Event_ID = $result[0]['ID'];
+                    $Teilnehmer_min = !empty($_POST['teilnehmer_min']) ? $_POST['teilnehmer_min'] : NULL;
+                    $Teilnehmer_max = !empty($_POST['teilnehmer_max']) ? $_POST['teilnehmer_max'] : NULL;
+                    $Preis_Mitglieder_rp = $_POST['preis_mitglieder'] * 100;
+                    $Preis_Nichtmitglieder_rp = $_POST['preis_nichtmitglieder'] * 100;
+                    $Besonderes = !empty($_POST['besonderes']) ? $_POST['besonderes'] : NULL;
+                    
+                    $data = array(
+                        'Name' => $_POST['name'],
+                        'Beschreibung' => $_POST['beschreibung'],
+                        'Treffpunkt' => $_POST['treffpunkt'],
+                        'Teilnehmer_min' => $Teilnehmer_min,
+                        'Teilnehmer_max' => $Teilnehmer_max,
+                        'Preis_Mitglieder_rp' => $Preis_Mitglieder_rp,
+                        'Preis_Nichtmitglieder_rp' => $Preis_Nichtmitglieder_rp,
+                        'Besonderes' => $Besonderes,
+                        'Leitung' => $_POST['leitung'],
+                        'Event_ID' => $Event_ID,
+                    );
+                    $course = new CourseModel(Application::getInstance()->getDBconnection());
+                    $course->insert($data);
+
+                    // prepare and insert data for table "Kurstag"
+                    $Course_ID = $course->getLastInsertedID();
+                    $new_course_day_set = true;
+                    $current_course = 1;
+                    while($new_course_day_set)
+                    {
+                        $class = new ClassModel(Application::getInstance()->getDBconnection());
+                        $class_min_ID = NULL;
+                        $class_max_ID = NULL;
+                        if(!empty($_POST['course_day_class_min-'."{$current_course}"]))
+                        {
+                            $class_min_ID = $class->getClassID($this->escapeInput($_POST['course_day_class_min-'."{$current_course}"]));
+                        }
+                        if(!empty($_POST['course_day_class_max-'."{$current_course}"]))
+                        {
+                            $class_max_ID = $class->getClassID($this->escapeInput($_POST['course_day_class_max-'."{$current_course}"]));
+                        }
+                        $data = array(
+                            'Datum_Begin' => date("Y-m-d H:i:s", strtotime($this->escapeInput($_POST['course_day_begin-'."{$current_course}"]))),
+                            'Datum_Ende' => date("Y-m-d H:i:s", strtotime($this->escapeInput($_POST['course_day_end-'."{$current_course}"]))),
+                            'Klasse_min' => $class_min_ID,
+                            'Klasse_max' => $class_max_ID,
+                            'Kurs_ID' => $Course_ID,
+                        );
+                        $course_day = new CourseDayModel(Application::getInstance()->getDBconnection());
+                        $course_day->new_course_day($data);
+                        $current_course++;
+                        $new_course_day_set = isset($_POST['course_day_begin-'."{$current_course}"]);
+                    }
+                }
+                catch(\PDOException $e)
+                {
+
+                }
+                catch(\Exception $e)
+                {
+
+                }
+                $this->redirect_to("manage?edit=courses");
+            }
+            else
+            {
+                $this->view->show_error_message(
+                    "Eingabefehler",
+                    "Sie haben nicht alle Felder korrekt ausgefüllt",
+                    "Eingabefehler",
+                    "Der Vorgang wurde abgebrochen"
+                );
+            }
         }
+        else
+        {
+            $this->redirect_to("home");
+        }
+    }
+
+    private function validateNewcourse()
+    {
+        $validInput = (isset($_POST['events_dropdown']) && !empty($_POST['events_dropdown']));
+        $validInput &= (isset($_POST['name']) && !empty($_POST['name']));
+        $validInput &= (isset($_POST['beschreibung']) && !empty($_POST['beschreibung']));
+        $validInput &= (isset($_POST['treffpunkt']) && !empty($_POST['treffpunkt']));
+        if(!empty($_POST['teilnehmer_min']) && !empty($_POST['teilnehmer_max']))
+        {
+            $validInput &= ($_POST['teilnehmer_min'] <= $_POST['teilnehmer_max']);
+        }
+        $validInput &= (isset($_POST['preis_mitglieder']) && !empty($_POST['preis_mitglieder']));
+        $validInput &= (isset($_POST['preis_nichtmitglieder']) && !empty($_POST['preis_nichtmitglieder']));
+        $validInput &= ($_POST['preis_mitglieder'] <= $_POST['preis_nichtmitglieder']);
+        $new_course_day_set = true;
+        $current_course = 1;
+        while($new_course_day_set)
+        {
+            $validInput &= (strtotime($_POST['course_day_begin-'."{$current_course}"]) < strtotime($_POST['course_day_end-'."{$current_course}"]));
+            $current_course++;
+            $new_course_day_set = isset($_POST['course_day_begin-'."{$current_course}"]);
+        }
+        return $validInput;
     }
 
     public function add_course_day()

@@ -16,4 +16,9 @@ class CourseModel extends Model
         );
         return $this->select($data, TRUE);
     }
+
+    public function new_course($data)
+    {
+        return $this->insert($data);
+    }
 }

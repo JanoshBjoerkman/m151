@@ -134,7 +134,7 @@ class ManageView extends View
             ));
             $class_dropdown_items .= $this->view->fetch($this->templateDir."dropdown_item.html");
         }
-        $dropdown_id = 'course_day_class';
+        $dropdown_id = 'course_day_class_min';
         $this->view->assign(
             array(
                 'dropdown_title' => 'ab:',
@@ -142,11 +142,21 @@ class ManageView extends View
                 'select_name' => $dropdown_id."-{$id}",
                 'dropdown_items' => $class_dropdown_items
         ));
-        $class_dropdown = $this->view->fetch($this->templateDir.'dropdown.html');
+        $class_min_dropdown = $this->view->fetch($this->templateDir.'dropdown.html');
+        $dropdown_id = 'course_day_class_max';
+        $this->view->assign(
+            array(
+                'dropdown_title' => 'bis:',
+                'select_id' => $dropdown_id,
+                'select_name' => $dropdown_id."-{$id}",
+                'dropdown_items' => $class_dropdown_items
+        ));
+        $class_max_dropdown = $this->view->fetch($this->templateDir.'dropdown.html');
         $this->view->assign(array(
             'course_day_panel_id' => $id,
             'input_id' => $id,
-            'class_dropdown' => $class_dropdown   
+            'class_min_dropdown' => $class_min_dropdown,
+            'class_max_dropdown' => $class_max_dropdown,
         ));
         return $this->view->fetch($this->templateDir."courses_course_day.html");
     }
