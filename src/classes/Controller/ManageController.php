@@ -96,9 +96,9 @@ class ManageController extends Controller
     private function prepareEventsContent()
     {
         $event = new EventModel(Application::getInstance()->getDBconnection());
-        $thisYearsEvent = $event->get_event_by_year(date("Y"));
-        $allEvents = $event->select_all();
-        if(empty($thisYearsEvent) && empty($allEvents))
+        //$thisYearsEvent = $event->get_event_by_year(date("Y"));
+        $allEvents = $event->select_all("Event_start ASC");
+        if(empty($allEvents))
         {
             $body_content = $this->view->getEventsContent_no_events();
         }
@@ -164,7 +164,7 @@ class ManageController extends Controller
     public function create_new_event()
     {
         $this->session->refresh();
-        if($this->allNewEventFieldsSet() && $this->adminAndLoggedInCheck())
+        if($this->allNewEventFieldsValid() && $this->adminAndLoggedInCheck())
         {
             $data = array(
                 'Titel' => $this->escapeInput($_POST['Titel']),
@@ -199,7 +199,7 @@ class ManageController extends Controller
                     "Fehler",
                     "Leider ist etwas schiefgelaufen...",
                     "Fehler:",
-                    "{$e->getMessage()}"
+                    "Bitte wenden Sie sich an den Administrator"
                 );
             }                       
         }
@@ -207,28 +207,33 @@ class ManageController extends Controller
         {
             $this->view->show_error_message(
                 "Eingabefehler",
-                "Sie haben nicht alle Felder ausgefüllt",
+                "Sie haben nicht alle Felder korrekt ausgefüllt",
                 "Eingabefehler",
                 "Der Vorgang wurde abgebrochen"
             );
         }
     }
 
-    private function allNewEventFieldsSet()
+    private function allNewEventFieldsValid()
     {
-        if(isset($_POST['event_start']) && 
-                isset($_POST['event_ende']) &&
-                isset($_POST['Titel']) &&
-                isset($_POST['phase1']) &&
-                isset($_POST['phase2']) &&
-                isset($_POST['anmeldeschluss']))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        // check if fields are set
+        $valid = (isset($_POST['event_start']) && !empty($_POST['event_start']) &&
+                    isset($_POST['event_ende']) && !empty($_POST['event_ende']) &&
+                    isset($_POST['Titel']) && !empty($_POST['Titel']) &&
+                    isset($_POST['phase1']) && !empty($_POST['phase1']) &&
+                    isset($_POST['phase2']) && !empty($_POST['phase2']) &&
+                    isset($_POST['anmeldeschluss']) && !empty($_POST['anmeldeschluss']));
+        $valid &= (strtotime($_POST['event_start']) < strtotime($_POST['event_ende']));
+        $valid &= (strtotime($_POST['phase1']) < strtotime($_POST['phase2']));
+        $valid &= (strtotime($_POST['anmeldeschluss']) < strtotime($_POST['event_start']));
+        // check if fields are valid
+        $current_datetime = date("Y-m-d H:i:s");
+        $valid &= ($current_datetime < strtotime($_POST['event_start']));
+        $valid &= ($current_datetime < strtotime($_POST['event_ende']));
+        $valid &= ($current_datetime < strtotime($_POST['phase1']));
+        $valid &= ($current_datetime < strtotime($_POST['phase2']));
+        $valid &= ($current_datetime < strtotime($_POST['anmeldeschluss']));
+        return $valid;
     }
 
     public function delete_event()
@@ -332,10 +337,6 @@ class ManageController extends Controller
                         $current_course++;
                         $new_course_day_set = isset($_POST['course_day_begin-'."{$current_course}"]);
                     }
-                }
-                catch(\PDOException $e)
-                {
-
                 }
                 catch(\Exception $e)
                 {

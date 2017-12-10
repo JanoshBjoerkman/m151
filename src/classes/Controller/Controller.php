@@ -17,6 +17,12 @@ class Controller
         $this->view = TemplateEngine::getInstance();
     }
 
+    protected function reset_view()
+    {
+        $this->view = TemplateEngine::getInstance();
+        $this->view = $this->view->smarty;
+    }
+
     public function info()
     {
         phpinfo();        

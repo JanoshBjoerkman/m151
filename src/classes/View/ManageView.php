@@ -19,18 +19,17 @@ class ManageView extends View
     public function getOverviewContent_no_event($eventlink)
     {
         $no_event = array(
-            'year' => date("Y"),
             'eventlink' => $eventlink
         );
         $this->view->assign($no_event);
         return $this->view->fetch($this->templateDir."overview_no_event.html");
     }
 
-    public function getOverviewContent_has_event($thisYearsEvent, $numberOfCourses)
+    public function getOverviewContent_has_event($event, $numberOfCourses)
     {
         // get this years event title and count courses
-        $title = $thisYearsEvent[0]['Titel'];
-        $visible = ($thisYearsEvent[0]['visible'] == '1') ? 'ja' : 'nein';
+        $title = $event[0]['Titel'];
+        $visible = ($event[0]['visible'] == '1') ? 'ja' : 'nein';
         $event_overview = array(
             'title' => $title,
             'visible' => $visible,
@@ -122,6 +121,7 @@ class ManageView extends View
 
     public function getCourseDay($classes, $id)
     {
+        // generate class select-dropdown items
         $class_dropdown_items = "";
         foreach($classes as $key => $data)
         {
@@ -134,6 +134,8 @@ class ManageView extends View
             ));
             $class_dropdown_items .= $this->view->fetch($this->templateDir."dropdown_item.html");
         }
+        
+        // generate min class dropdown
         $dropdown_id = 'course_day_class_min';
         $this->view->assign(
             array(
@@ -143,6 +145,8 @@ class ManageView extends View
                 'dropdown_items' => $class_dropdown_items
         ));
         $class_min_dropdown = $this->view->fetch($this->templateDir.'dropdown.html');
+
+        // generate max class dropdown
         $dropdown_id = 'course_day_class_max';
         $this->view->assign(
             array(
@@ -152,6 +156,8 @@ class ManageView extends View
                 'dropdown_items' => $class_dropdown_items
         ));
         $class_max_dropdown = $this->view->fetch($this->templateDir.'dropdown.html');
+
+        // generate html code for new course day
         $this->view->assign(array(
             'course_day_panel_id' => $id,
             'input_id' => $id,
