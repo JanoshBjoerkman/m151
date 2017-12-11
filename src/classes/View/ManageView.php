@@ -39,24 +39,24 @@ class ManageView extends View
         return $this->view->fetch($this->templateDir."overview_has_event.html");;
     }
 
-    public function getCreateNewEventTable()
-    {
-        return $this->view->fetch($this->templateDir."events_new_event.html");
-    }
-
     public function getEventsContent_no_events()
     {
         $body_content = $this->getCreateNewEventTable();
         return $body_content;
     }
 
-    public function getEventsContent_has_events($allEvents)
+        public function getEventsContent_has_events($allEvents)
     {
         $table_rows = $this->getEventsTableRows($allEvents);
         $this->view->assign('table_rows', $table_rows);
         $body_content = $this->view->fetch($this->templateDir."events_table.html");
         $body_content .= $this->getCreateNewEventTable();
         return $body_content;
+    }
+
+    public function getCreateNewEventTable()
+    {
+        return $this->view->fetch($this->templateDir."events_new_event.html");
     }
 
     public function getEventsTableRows($allEvents)
@@ -81,8 +81,15 @@ class ManageView extends View
         return $table_rows;
     }
 
-    public function getCourses_no_courses($events, $classes)
+    public function getCoursesContent($events, $classes, $allCourses)
     {
+        // content for: all courses
+        $content = array(
+            'table_rows' => $this->getCoursesTableRows($allCourses)
+        );
+        $this->view->assign($content);
+        $body_content = $this->view->fetch($this->templateDir."courses_table.html");
+        // content for: create new course
         $events_dropdown = $this->getEventsDropdown($events);
         $course_day = $this->getCourseDay($classes, 1);
         $this->view->assign(
@@ -90,7 +97,23 @@ class ManageView extends View
             'events_dropdown' => $events_dropdown,
             'course_day' => $course_day
         ));
-        return $this->view->fetch($this->templateDir."courses_new_course.html");
+        $body_content .= $this->view->fetch($this->templateDir."courses_new_course.html");
+        return $body_content;
+    }
+
+    public function getCoursesTableRows($allCourses)
+    {
+        $rows = "";
+        foreach($allCourses as $key => $course_data)
+        {
+            $content = array(
+                'name' => $course_data['Name'],
+                'ID' => $course_data['ID']
+            );
+            $this->view->assign($content);
+            $rows .= $this->view->fetch($this->templateDir."courses_table_row.html");
+        }
+        return $rows;
     }
 
     public function getEventsDropdown($events)

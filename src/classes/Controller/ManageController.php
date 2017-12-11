@@ -130,8 +130,10 @@ class ManageController extends Controller
         }
         else
         {
+            $course = new CourseModel(Application::getInstance()->getDBconnection());
+            $allCourses = $course->select_all("Name ASC, Event_ID ASC");
             $this->view = new ManageView();
-            $body_content = $this->view->getCourses_no_courses($events, $allClasses);
+            $body_content = $this->view->getCoursesContent($events, $allClasses, $allCourses);
         }
         return array(
             'tab_title' => 'Kurse',
@@ -311,18 +313,19 @@ class ManageController extends Controller
                     $Course_ID = $course->getLastInsertedID();
                     $new_course_day_set = true;
                     $current_course = 1;
+                    $class = new ClassModel(Application::getInstance()->getDBconnection());
+                    $class_container = $class->select_all();
                     while($new_course_day_set)
                     {
-                        $class = new ClassModel(Application::getInstance()->getDBconnection());
                         $class_min_ID = NULL;
                         $class_max_ID = NULL;
                         if(!empty($_POST['course_day_class_min-'."{$current_course}"]))
                         {
-                            $class_min_ID = $class->getClassID($this->escapeInput($_POST['course_day_class_min-'."{$current_course}"]));
+                            $class_min_ID = $this->getIDFromClassContainer($class_container, $this->escapeInput($_POST['course_day_class_min-'."{$current_course}"]));
                         }
                         if(!empty($_POST['course_day_class_max-'."{$current_course}"]))
                         {
-                            $class_max_ID = $class->getClassID($this->escapeInput($_POST['course_day_class_max-'."{$current_course}"]));
+                            $class_max_ID = $this->getIDFromClassContainer($class_container, $this->escapeInput($_POST['course_day_class_max-'."{$current_course}"]));
                         }
                         $data = array(
                             'Datum_Begin' => date("Y-m-d H:i:s", strtotime($this->escapeInput($_POST['course_day_begin-'."{$current_course}"]))),
@@ -359,18 +362,27 @@ class ManageController extends Controller
         }
     }
 
+    private function getIDFromClassContainer($container, $classdescription)
+    {
+        $results = array_column($container, 'ID', 'Klassenbezeichnung');
+        return isset($results[$classdescription]) ? $results[$classdescription] : NULL;
+    }
+
     private function validateNewcourse()
     {
+        // all required fields set?
         $validInput = (isset($_POST['events_dropdown']) && !empty($_POST['events_dropdown']));
         $validInput &= (isset($_POST['name']) && !empty($_POST['name']));
         $validInput &= (isset($_POST['beschreibung']) && !empty($_POST['beschreibung']));
         $validInput &= (isset($_POST['treffpunkt']) && !empty($_POST['treffpunkt']));
         if(!empty($_POST['teilnehmer_min']) && !empty($_POST['teilnehmer_max']))
         {
+            // teilnehmer_min must be lower or equal than teilnehmer_max
             $validInput &= ($_POST['teilnehmer_min'] <= $_POST['teilnehmer_max']);
         }
         $validInput &= (isset($_POST['preis_mitglieder']) && !empty($_POST['preis_mitglieder']));
         $validInput &= (isset($_POST['preis_nichtmitglieder']) && !empty($_POST['preis_nichtmitglieder']));
+        // non-member usually has to pay more
         $validInput &= ($_POST['preis_mitglieder'] <= $_POST['preis_nichtmitglieder']);
         $new_course_day_set = true;
         $current_course = 1;
