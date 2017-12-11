@@ -16,6 +16,7 @@ class ManageView extends View
         $this->view->display('manage.html');
     }
 
+    // overview
     public function getOverviewContent_no_event($eventlink)
     {
         $no_event = array(
@@ -39,6 +40,7 @@ class ManageView extends View
         return $this->view->fetch($this->templateDir."overview_has_event.html");;
     }
 
+    // events
     public function getEventsContent_no_events()
     {
         $body_content = $this->getCreateNewEventTable();
@@ -81,6 +83,7 @@ class ManageView extends View
         return $table_rows;
     }
 
+    // courses
     public function getCoursesContent($events, $classes, $allCourses)
     {
         // content for: all courses
@@ -189,5 +192,43 @@ class ManageView extends View
             'class_max_dropdown' => $class_max_dropdown,
         ));
         return $this->view->fetch($this->templateDir."courses_course_day.html");
+    }
+
+    public function getCourseInfo($course, $courseDays, $event)
+    {
+        $courseday_panels = "";
+        $index = 1;
+        foreach($courseDays as $key => $data)
+        {
+            $courseday_panels .= $this->getCourseDayInfoTable($index, $data);
+            $index++;
+        }
+        $this->view->assign(array(
+            'Name' => $course[0]['Name'],
+            'Beschreibung' => $course[0]['Beschreibung'],
+            'Treffpunkt' => $course[0]['Treffpunkt'],
+            'Teilnehmer_min' => $course[0]['Teilnehmer_min'],
+            'Teilnehmer_max' => $course[0]['Teilnehmer_max'],
+            'Preis_mitglieder' => number_format($course[0]['Preis_Mitglieder_rp'] / 100, 2),
+            'Preis_nichtmitglieder' => number_format($course[0]['Preis_Nichtmitglieder_rp'] / 100, 2),
+            'Besonderes' => ($course[0]['Besonderes'] != "") ? $course[0]['Besonderes'] : "-",
+            'Leitung' => $course[0]['Leitung'],
+            'Event' => $event[0]['Titel'],
+            'courseday_panels' => $courseday_panels
+        ));
+        return $this->view->fetch($this->templateDir."courses_course_info_modal.html");
+    }
+
+    public function getCourseDayInfoTable($index, $courseDay)
+    {
+        $courseday_row  = "<tr>
+                                <td>{$courseDay['Datum_Begin']}</td>
+                                <td>{$courseDay['Datum_Ende']}</td>
+                            </tr>";
+        $this->view->assign(array(
+           'index' => $index,
+            'courseday_row' => $courseday_row
+        ));
+        return $this->view->fetch($this->templateDir."courses_course_info_modal_course_day_panel.html");
     }
 }

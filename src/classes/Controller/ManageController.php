@@ -342,7 +342,7 @@ class ManageController extends Controller
                 }
                 catch(\Exception $e)
                 {
-
+                    throw new \Exception("FOOOCK");
                 }
                 $this->redirect_to("manage?edit=courses");
             }
@@ -457,8 +457,27 @@ class ManageController extends Controller
         if($this->adminAndLoggedInCheck())
         {
             $this->view = new ManageView();
+            $currentCourse_ID = $_POST['ID'];
             $course = new CourseModel(Application::getInstance()->getDBconnection());
-            echo $_POST['ID'];
+            $currentCourse = $course->select(array(
+                'ID' => $currentCourse_ID
+            ), TRUE);
+            if(!empty($currentCourse))
+            {
+                $event = new EventModel(Application::getInstance()->getDBconnection());
+                $correspondingEvent = $event->select(array(
+                    'ID' => $currentCourse[0]['Event_ID']
+                ), TRUE);
+                $courseday = new CourseDayModel(Application::getInstance()->getDBconnection());
+                $courseDays = $courseday->select(array(
+                    'Kurs_ID' => $currentCourse_ID
+                ), TRUE);
+                echo $this->view->getCourseInfo($currentCourse, $courseDays, $correspondingEvent);
+            }
+            else
+            {
+                echo "ERROR";
+            }
         }
         else
         {
