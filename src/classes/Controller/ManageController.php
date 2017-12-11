@@ -407,4 +407,62 @@ class ManageController extends Controller
             echo $this->view->getCourseDay($allClasses, $next_course_day_id);
         }
     }
+
+    public function delete_course()
+    {
+        $this->session->refresh();
+        if($this->adminAndLoggedInCheck())
+        {
+            if(!empty($_POST['ID']))
+            {
+                $where = array(
+                    'ID' => $_POST['ID']
+                );
+                $course = new CourseModel(Application::getInstance()->getDBconnection());
+                if($course->delete($where))
+                {
+                    echo "TRUE";
+                }
+                else
+                {
+                    echo "FALSE";
+                }
+            }
+        }
+        else
+        {
+            echo "ERROR";
+        }
+    }
+
+    public function refresh_courses_table()
+    {
+        $this->session->refresh();
+        if($this->adminAndLoggedInCheck())
+        {
+            $this->view = new ManageView();
+            $course = new CourseModel(Application::getInstance()->getDBconnection());
+            $allCourses = $course->select_all();
+            echo $this->view->getCoursesTableRows($allCourses);
+        }
+        else
+        {
+            echo "ERROR";
+        }
+    }
+
+    public function show_course_info()
+    {
+        $this->session->refresh();
+        if($this->adminAndLoggedInCheck())
+        {
+            $this->view = new ManageView();
+            $course = new CourseModel(Application::getInstance()->getDBconnection());
+            echo $_POST['ID'];
+        }
+        else
+        {
+            echo "ERROR";
+        }
+    }
 }

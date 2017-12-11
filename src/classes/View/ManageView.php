@@ -85,7 +85,8 @@ class ManageView extends View
     {
         // content for: all courses
         $content = array(
-            'table_rows' => $this->getCoursesTableRows($allCourses)
+            'table_rows' => $this->getCoursesTableRows($allCourses),
+            'modal_content' => ""
         );
         $this->view->assign($content);
         $body_content = $this->view->fetch($this->templateDir."courses_table.html");
