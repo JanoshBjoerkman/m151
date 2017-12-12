@@ -221,12 +221,56 @@ class ManageView extends View
 
     public function getCourseDayInfoTable($index, $courseDay)
     {
+        $class_text = "";
+        // create class text based on class min/max
+        if(empty($courseDay['Klasse_min']) || empty($courseDay['Klasse_min']))
+        {
+            // should never occur...
+            $class_text = "ERROR. No min/max class found in course day. Please contact the admin.";
+        }
+        else
+        {
+            // check if min or max is set to "no restriction"
+            if($courseDay['Klasse_min'] == "-" || $courseDay['Klasse_max'] == "-")
+            {
+                if($courseDay['Klasse_min'] == "-" && $courseDay['Klasse_max'] == "-")
+                {
+                    // no class restrictions
+                    $class_text = "alle";
+                }
+                else
+                {
+                    // check which class has restriction
+                    $class_text = ($courseDay['Klasse_min'] == "-") ? "bis {$courseDay['Klasse_max']}" : "ab {$courseDay['Klasse_min']}";
+                }
+            }
+            else
+            {
+                if($courseDay['Klasse_min'] == $courseDay['Klasse_max'])
+                {
+                    $class_text = "nur {$courseDay['Klasse_min']}";
+                }
+                else
+                {
+                    // normal class restrictions -> set normal class text
+                    $class_text = "ab {$courseDay['Klasse_min']} - bis {$courseDay['Klasse_max']}";
+                }
+            }
+        }
+        // format date and put data in row
+        $begin = date("d.m.Y H:i", strtotime($courseDay['Datum_Begin']));
+        $end = date("d.m.Y H:i", strtotime($courseDay['Datum_Ende']));
         $courseday_row  = "<tr>
-                                <td>{$courseDay['Datum_Begin']}</td>
-                                <td>{$courseDay['Datum_Ende']}</td>
+                                <th>Begin</th>
+                                <td>{$end}</td>
+                            </tr>
+                            <tr>
+                                <th>Ende</th>
+                                <td>{$end}</td>
                             </tr>";
         $this->view->assign(array(
            'index' => $index,
+           'class_text' => $class_text,
             'courseday_row' => $courseday_row
         ));
         return $this->view->fetch($this->templateDir."courses_course_info_modal_course_day_panel.html");

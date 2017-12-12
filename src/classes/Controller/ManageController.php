@@ -456,7 +456,7 @@ class ManageController extends Controller
         $this->session->refresh();
         if($this->adminAndLoggedInCheck())
         {
-            $this->view = new ManageView();
+            // get data from current course
             $currentCourse_ID = $_POST['ID'];
             $course = new CourseModel(Application::getInstance()->getDBconnection());
             $currentCourse = $course->select(array(
@@ -464,24 +464,47 @@ class ManageController extends Controller
             ), TRUE);
             if(!empty($currentCourse))
             {
+                // get corresponding event data
                 $event = new EventModel(Application::getInstance()->getDBconnection());
                 $correspondingEvent = $event->select(array(
                     'ID' => $currentCourse[0]['Event_ID']
                 ), TRUE);
+                // get all classes
+                $class = new ClassModel(Application::getInstance()->getDBconnection());
+                $class_container = $class->select_all();
+                // get all coursedays for this course
                 $courseday = new CourseDayModel(Application::getInstance()->getDBconnection());
                 $courseDays = $courseday->select(array(
                     'Kurs_ID' => $currentCourse_ID
                 ), TRUE);
+                // replace class (min/max) ID with text from all classes-container
+                foreach($courseDays as $key => &$data)
+                {
+                    $data['Klasse_min'] = $this->getClassDescriptionFromClassContainer($class_container, $data['Klasse_min']);
+                    $data['Klasse_max'] = $this->getClassDescriptionFromClassContainer($class_container, $data['Klasse_max']);
+                }
+                // generate output with the modified data
+                $this->view = new ManageView();
                 echo $this->view->getCourseInfo($currentCourse, $courseDays, $correspondingEvent);
             }
             else
             {
-                echo "ERROR";
+                // this should never occur, just for safety
+                echo "ERROR: no course with ID ".$_POST['ID']." found. Please contact the developer.";
             }
         }
         else
         {
+            // the user which requested the course info isn't admin or logged in
             echo "ERROR";
         }
+    }
+
+    private function getClassDescriptionFromClassContainer($container, $classID)
+    {
+        // generate array from multidimensional array
+        // structure is like this: key -> ID, value -> classdescription
+        $results = array_column($container, 'Klassenbezeichnung', 'ID');
+        return isset($results[$classID]) ? $results[$classID] : NULL;
     }
 }
