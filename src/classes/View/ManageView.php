@@ -246,6 +246,7 @@ class ManageView extends View
             }
             else
             {
+                // min and max aren't set to no restriction
                 if($courseDay['Klasse_min'] == $courseDay['Klasse_max'])
                 {
                     $class_text = "nur {$courseDay['Klasse_min']}";
@@ -262,7 +263,7 @@ class ManageView extends View
         $end = date("d.m.Y H:i", strtotime($courseDay['Datum_Ende']));
         $courseday_row  = "<tr>
                                 <th>Begin</th>
-                                <td>{$end}</td>
+                                <td>{$begin}</td>
                             </tr>
                             <tr>
                                 <th>Ende</th>

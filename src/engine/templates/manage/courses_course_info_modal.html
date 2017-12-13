@@ -8,7 +8,7 @@
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title"><b>Beschreibung</b></h3>
+            <h3 class="panel-title"><b>Beschreibung</b><i class="fa fa-info pull-right" aria-hidden="true"></i></h3>
         </div>
         <div class="panel-body">
             {$Beschreibung}
@@ -18,55 +18,66 @@
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
     <div class="jumbotron">
         <div class="container">
-            <p><i class="fa fa-map-marker" aria-hidden="true"></i> <b>Treffpunkt:</b> <small>{$Treffpunkt}</small></p>
             <div class="row">
-                <h4><i class="fa fa-hashtag" aria-hidden="true"></i> <b>Teilnehmer:</b></h4>
-                <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
+                <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
                     <div class="table-responsive">
                         <table class="table table-hover">
                             <thead>
+                                <tr>
+                                    <th colspan="2" class="text-center">
+                                        Teilnehmer
+                                        <i class="fa fa-hashtag pull-right" aria-hidden="true"></i>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
                                 <tr>
                                     <th><i class="fa fa-user" aria-hidden="true"></i> min</th>
-                                    <th><i class="fa fa-users" aria-hidden="true"></i> max</th>
+                                    <td class="pull-right">{$Teilnehmer_min}</td>
                                 </tr>
-                            </thead>
-                            <tbody>
                                 <tr>
-                                    <td>{$Teilnehmer_min}</td>
-                                    <td>{$Teilnehmer_max}</td>
+                                    <th><i class="fa fa-users" aria-hidden="true"></i> max</th>
+                                    <td class="pull-right">{$Teilnehmer_max}</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2"></div>
             </div>
             <div class="row">
-                <h4><i class="fa fa-money" aria-hidden="true"></i> <b>Preis:</b></h4>
-                <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
+                <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7">
                     <div class="table-responsive">
                         <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th>Mitglieder</th>
-                                    <th>Nichtmitglieder</th>
+                                    <th colspan="2" class="text-center">
+                                        Preis
+                                        <i class="fa fa-money pull-right" aria-hidden="true"></i>
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>{$Preis_mitglieder} Fr.</td>
-                                    <td>{$Preis_nichtmitglieder} Fr.</td>
+                                    <th>Mitglieder</th>
+                                    <td class="pull-right">{$Preis_mitglieder} Fr.</td>
+                                </tr>
+                                <tr>
+                                    <th>Nichtmitglieder</th>
+                                    <td class="pull-right">{$Preis_nichtmitglieder} Fr.</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2"></div>
             </div>
             <div class="row">
-                <br>
-                <p><i class="fa fa-user-circle-o" aria-hidden="true"></i> <b>Leitung:</b> {$Leitung}</p>
-                <p><b>Event:</b> {$Event}</p>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <ul class="list-group">
+                        <li class="list-group-item"><i class="fa fa-map-marker" aria-hidden="true"></i> <b>Treffpunkt:</b> {$Treffpunkt}</li>
+                        <li class="list-group-item"><i class="fa fa-user-circle-o" aria-hidden="true"></i> <b>Leitung:</b> {$Leitung}</li>
+                        <li class="list-group-item"><b>Event:</b> {$Event}</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -74,7 +85,7 @@
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title"><b>Besonderes</b></h3>
+            <h3 class="panel-title"><b>Besonderes</b><i class="fa fa-exclamation pull-right" aria-hidden="true"></i></h3>
         </div>
         <div class="panel-body">
             {$Besonderes}

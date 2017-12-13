@@ -76,6 +76,10 @@ function show_course_info(course_id) {
     $request.done(function(response, textStatus, jqXHR) {
         $('#show_course_info_modal .modal-body').html(response);
         $('#show_course_info_modal').modal('show', { backdrop: 'static' });
+        // fitt dynamic content in modal body (between the small grey lines)
+        $('#show_course_info_modal .modal-body').css({
+            'overflow-y': 'auto'
+        });
     });
 }
 
