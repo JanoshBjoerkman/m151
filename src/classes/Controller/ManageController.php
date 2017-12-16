@@ -190,7 +190,7 @@ class ManageController extends Controller
                         "Fehler",
                         "Leider ist etwas schiefgelaufen...",
                         "Fehler:",
-                        "{$e->getMessage()}"
+                        "Bitte wenden Sie sich an den Administrator"
                     );
                 }
             }
@@ -200,7 +200,7 @@ class ManageController extends Controller
                     "Fehler",
                     "Leider ist etwas schiefgelaufen...",
                     "Fehler:",
-                    "Bitte wenden Sie sich an den Administrator"
+                    "{$e->getMessage()}"
                 );
             }                       
         }
@@ -342,7 +342,7 @@ class ManageController extends Controller
                 }
                 catch(\Exception $e)
                 {
-                    throw new \Exception("FOOOCK");
+                    throw new \Exception("ERROR");
                 }
                 $this->redirect_to("manage?edit=courses");
             }
