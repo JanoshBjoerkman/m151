@@ -66,7 +66,7 @@ class ManageView extends View
         $table_rows = "";
         foreach($allEvents as $eventKey => $eventData)
         {
-            $visible = ($eventData['visible'] == '1') ? 'ja' : 'nein';
+            $visible = ($eventData['visible'] == '1') ? 'checked' : '';
             $row = array(
                 'ID' => $eventData['ID'],
                 'titel' => $eventData['Titel'],

@@ -25,6 +25,14 @@ abstract class Model
         return $result;
     }
 
+    public function update($set, $where)
+    {
+        $SET = $this->prepareNamedPlaceholdersForSet(array_keys($set));
+        $WHERE  = $this->prepareNamedPlaceholdersForWhere(array_keys($where), "AND");
+        $STH = $this->DBH->prepare("UPDATE {$this->tablename()} SET {$SET} WHERE {$WHERE}");
+        return $STH->execute(array_merge_recursive($set, $where));
+    }
+
     public function delete($data, $logic = "AND")
     {
         $where = $this->prepareNamedPlaceholdersForWhere(array_keys($data), $logic);
@@ -100,6 +108,16 @@ abstract class Model
             $placeholders[] = "({$value} = :{$value})";
         }
         return join($logic, $placeholders);
+    }
+
+    protected function prepareNamedPlaceholdersForSet($keys)
+    {
+        $placeholders = array();
+        foreach($keys as $key => $value)
+        {
+            $placeholders[] = "{$value} = :{$value}";
+        }
+        return join(",", $placeholders);
     }
 
     public function getLastInsertedID()

@@ -12,6 +12,7 @@ use M151\View\ManageView;
 
 class ManageController extends Controller
 {
+    // entry point for /manage
     public function manage(Request $request)
     {    
         $this->session->refresh();
@@ -64,6 +65,7 @@ class ManageController extends Controller
         }
     }
 
+    // general overview
     private function prepareOverviewContent()
     {
         $event = new EventModel(Application::getInstance()->getDBconnection());
@@ -92,10 +94,10 @@ class ManageController extends Controller
         );
     }
 
+    // events overview
     private function prepareEventsContent()
     {
         $event = new EventModel(Application::getInstance()->getDBconnection());
-        //$thisYearsEvent = $event->get_event_by_year(date("Y"));
         $allEvents = $event->select_all("Event_start ASC");
         if(empty($allEvents))
         {
@@ -116,6 +118,7 @@ class ManageController extends Controller
         );
     }
 
+    // coruses overview
     private function prepareCoursesContent()
     {
         $event = new EventModel(Application::getInstance()->getDBconnection());
@@ -145,6 +148,7 @@ class ManageController extends Controller
         );
     }
 
+    // users overview
     private function prepareUsersContent()
     {
         return array(
@@ -157,11 +161,13 @@ class ManageController extends Controller
         );
     }
 
+    // settigns
     public function settings()
     {
 
     }
 
+    // event functions
     public function create_new_event()
     {
         $this->session->refresh();
@@ -270,6 +276,36 @@ class ManageController extends Controller
         }
     }
 
+    public function change_event_visibility()
+    {
+        $this->session->refresh();
+        if($this->adminAndLoggedInCheck())
+        {
+            try
+            {
+                $event = new EventModel(Application::getInstance()->getDBconnection());
+                $result = $event->update(array(
+                    'visible' => $_POST['visible'] == "true" ? 1 : 0
+                ), array(
+                    'ID' => $_POST['ID']
+                ));
+                if($result)
+                {
+                    echo "success";
+                }
+                else
+                {
+                    echo "ERROR: something went wrong";
+                }
+            }
+            catch(\Exception $e)
+            {
+                echo "ERROR: unable to change event visibility";
+            }
+        }
+    }
+
+    // course functions
     public function create_new_course()
     {
         $this->session->refresh();

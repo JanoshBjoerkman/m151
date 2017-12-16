@@ -44,11 +44,22 @@
         <!-- /.navbar-collapse -->
     </nav>
 
+    <!-- alert template, can be called through jQuery -->
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="alert collapse" id="manage_alert" role="alert">
+                    <button type="button" class="close" onclick="$('#manage_alert').hide('slow')" aria-hidden="true">&times;</button>
+                    <div id="manage_alert_text"></div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class='container'>
         {$body_content}
     </div>
 
-    {include file="scripts.html"}
+    {include file="admin_scripts.html"}
 </body>
 
 </html>

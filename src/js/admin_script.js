@@ -25,6 +25,12 @@ function refresh_manage_table(url, tbl_id) {
     });
 }
 
+function reset_manage_alert() {
+    $('#manage_alert').hide();
+    $('#manage_alert').removeClass();
+    $('#manage_alert').addClass('alert');
+}
+
 // courses functions:
 function remove_course_day() {
     var course_days = $("*[id^='course_day_panel-']").length;
@@ -100,4 +106,28 @@ function delete_event(event_id) {
     } else {
         alert("Vorgang abgebrochen.");
     }
+}
+
+function change_event_visibility(event_id, element) {
+    var visibility = $(element).is(':checked');
+    $request = $.ajax({
+        type: "POST",
+        url: "manage/change/event_visibility",
+        data: {
+            ID: event_id,
+            visible: visibility
+        }
+    });
+    $request.done(function(response, textStatus, jqXHR) {
+        reset_manage_alert();
+        if (response == "success") {
+            $('#manage_alert').addClass('alert-success');
+            $('#manage_alert_text').text("Die Sichtbarkeit wurde erfolgreich geändert.");
+        } else {
+            $('#manage_alert').addClass('alert-danger');
+            $('#manage_alert_text').text("Konnte die Sichtbarkeit nicht ändern. Versuchen Sie es nochmals oder wenden Sie sich an den Administrator.");
+        }
+        refresh_manage_table("manage/refresh_courses_table", "tbl_all_courses");
+        $('#manage_alert').show('slow');
+    });
 }

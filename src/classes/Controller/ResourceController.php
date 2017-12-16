@@ -10,11 +10,16 @@ class ResourceController extends Controller
     public function __construct()
     {
         $this->PATH_JS = dirname(__DIR__)."../../js/";
+        parent::__construct();
     }
 
-    public function own_js()
+    public function admin_js()
     {
-        header("Content-type: text/javascript");
-        readfile($this->PATH_JS."script.js"); 
+        $this->session->refresh();
+        if($this->adminAndLoggedInCheck())
+        {
+            header("Content-type: text/javascript");
+            readfile($this->PATH_JS."admin_script.js"); 
+        }
     }
 }
