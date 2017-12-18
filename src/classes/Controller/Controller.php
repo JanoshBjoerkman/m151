@@ -4,7 +4,7 @@ namespace M151\Controller;
 use M151\TemplateEngine;
 use M151\SessionHandler;
 
-class Controller 
+abstract class Controller 
 {
     private $basePath;
     protected $session;
@@ -25,7 +25,15 @@ class Controller
 
     public function info()
     {
-        phpinfo();        
+        phpinfo();     
+        
+        ini_set('author.sarcasm', TRUE);
+        if($leser == 'triggered')
+        {
+            echo "Sorry :)";
+        }
+        ini_set('author.sarcasm', FALSE);
+
     }
 
     // seen on: https://stackoverflow.com/questions/110575/do-htmlspecialchars-and-mysql-real-escape-string-keep-my-php-code-safe-from-inje

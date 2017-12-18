@@ -2,7 +2,6 @@
 
 use M151\Application;
 use M151\Router;
-use M151\Controller\Controller;
 use M151\Controller\LoginController;
 use M151\Controller\LogoutController;
 use M151\Controller\RegisterController;

@@ -489,7 +489,7 @@ class ManageController extends Controller
         {
             $this->view = new ManageView();
             $course = new CourseModel(Application::getInstance()->getDBconnection());
-            $allCourses = $course->select_all();
+            $allCourses = $course->select_all("Name ASC, Event_ID ASC");
             echo $this->view->getCoursesTableRows($allCourses);
         }
         else
