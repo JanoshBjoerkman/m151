@@ -9,13 +9,12 @@ use M151\Controller\RegisterController;
 use M151\Controller\HomeController;
 use M151\Controller\ManageController;
 use M151\Controller\ResourceController;
-use M151\Controller\AjaxDemoController;
 
 # lade composer autoloader:
 require_once(__DIR__.'/vendor/autoload.php');
 
 ######### testing routes #########
-Router::get('/info', Controller::class, 'info');
+// Router::get('/info', Controller::class, 'info');
 
 ######### productive routes #########
 # home

@@ -230,10 +230,10 @@ class ManageController extends Controller
                     isset($_POST['phase1']) && !empty($_POST['phase1']) &&
                     isset($_POST['phase2']) && !empty($_POST['phase2']) &&
                     isset($_POST['anmeldeschluss']) && !empty($_POST['anmeldeschluss']));
+        // check if fields are valid
         $valid &= (strtotime($_POST['event_start']) < strtotime($_POST['event_ende']));
         $valid &= (strtotime($_POST['phase1']) < strtotime($_POST['phase2']));
         $valid &= (strtotime($_POST['anmeldeschluss']) < strtotime($_POST['event_start']));
-        // check if fields are valid
         $current_datetime = date("Y-m-d H:i:s");
         $valid &= ($current_datetime < strtotime($_POST['event_start']));
         $valid &= ($current_datetime < strtotime($_POST['event_ende']));
@@ -406,11 +406,20 @@ class ManageController extends Controller
 
     private function validateNewcourse()
     {
+        // course days must be in the corresponding event range
+        $event = new EventModel(Application::getInstance()->getDBconnection());
+        $query = array(
+            'Titel' => $_POST['events_dropdown']
+        );
+        $result = $event->select($query, TRUE);
+        $correspondingEvent = $result[0];
+
         // all required fields set?
         $validInput = (isset($_POST['events_dropdown']) && !empty($_POST['events_dropdown']));
         $validInput &= (isset($_POST['name']) && !empty($_POST['name']));
         $validInput &= (isset($_POST['beschreibung']) && !empty($_POST['beschreibung']));
         $validInput &= (isset($_POST['treffpunkt']) && !empty($_POST['treffpunkt']));
+        // all fields valid?
         if(!empty($_POST['teilnehmer_min']) && !empty($_POST['teilnehmer_max']))
         {
             // teilnehmer_min must be lower or equal than teilnehmer_max
@@ -418,13 +427,15 @@ class ManageController extends Controller
         }
         $validInput &= (isset($_POST['preis_mitglieder']) && !empty($_POST['preis_mitglieder']));
         $validInput &= (isset($_POST['preis_nichtmitglieder']) && !empty($_POST['preis_nichtmitglieder']));
-        // non-member usually has to pay more
+        // non-member has to pay more
         $validInput &= ($_POST['preis_mitglieder'] <= $_POST['preis_nichtmitglieder']);
         $new_course_day_set = true;
         $current_course = 1;
         while($new_course_day_set)
         {
             $validInput &= (strtotime($_POST['course_day_begin-'."{$current_course}"]) < strtotime($_POST['course_day_end-'."{$current_course}"]));
+            $validInput &= (strtotime($correspondingEvent['Event_start']) <= strtotime($_POST['course_day_begin-'."{$current_course}"]));
+            $validInput &= (strtotime($_POST['course_day_end-'."{$current_course}"]) <= strtotime($correspondingEvent['Event_ende']));
             $current_course++;
             $new_course_day_set = isset($_POST['course_day_begin-'."{$current_course}"]);
         }

@@ -47,7 +47,6 @@ class Router {
     {
         $route = $req->urlRoute;
         $method = $req->method;
-
         foreach(static::$_routes as $routeInfo) 
         {
             if ($routeInfo['route'] === $route && ($routeInfo['method'] === null || $method === $routeInfo['method'])) 
@@ -55,7 +54,6 @@ class Router {
                 return $routeInfo;
             }
         }
-
         // 404 - route not found
         $content = array(
             'tab_title' => "404",
