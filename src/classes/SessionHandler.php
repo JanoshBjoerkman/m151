@@ -37,7 +37,7 @@ class SessionHandler
         $_SESSION['Account_ID'] = $accountID;
         $_SESSION['Account_is_admin'] = $is_admin;
     }
-
+    
     public function logout()
     {
         $this->refresh();

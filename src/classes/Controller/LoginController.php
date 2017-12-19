@@ -12,13 +12,13 @@ class LoginController extends Controller
         if($this->allFieldsSet())
         {
             $pw = $_POST['password'];
-            $data = array(
+            $where = array(
                 'Email' => $this->escapeInput($_POST['email']),
             );
             try
             {
                 $account = new AccountModel(Application::getInstance()->getDBconnection());
-                $result = $account->select($data, TRUE);
+                $result = $account->select($where, TRUE);
                 if(!empty($result) && password_verify($pw, $result[0]['Passwort']))
                 {
                     $this->session->login($result[0]['ID'], $result[0]['is_admin']);
@@ -29,7 +29,7 @@ class LoginController extends Controller
                     // email and/or password didn't match
                     $this->view->show_error_message(
                         "Fehler",
-                        "Email-Adresse oder Passwort nicht korrekt:",
+                        "Email-Adresse oder Passwort nicht korrekt",
                         "Fehler:",
                         "Bitte überprüfen Sie Ihre Eingabe."
                     );
@@ -37,11 +37,18 @@ class LoginController extends Controller
             }
             catch(\Exception $e)
             {
-                // TODO: error message
+                // shouldn't happen, just for safety
+                $this->view->show_error_message(
+                    "Datenbank-Fehler",
+                    "Irgendetwas ist schiefgelaufen",
+                    "Fehler:",
+                    "Bitte versuchen Sie es zu einem späterem Zeitpunkt oder wenden Sie sich an den Administrator."
+                );
             }
         }
         else
         {
+            // somehow not all fields were set. User should retry
             $this->redirect_to("home");
         }
     }
@@ -49,7 +56,8 @@ class LoginController extends Controller
     private function allFieldsSet()
     {
         $allSet = isset($_POST['email']) && isset($_POST['password']);
-        if($allSet)
+        $notEmpty = (!empty($_POST['email']) && !empty($_POST['password']));
+        if($allSet && $notEmpty)
         {
             return true;
         }

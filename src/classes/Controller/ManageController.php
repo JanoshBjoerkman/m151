@@ -462,17 +462,24 @@ class ManageController extends Controller
         {
             if(!empty($_POST['ID']))
             {
-                $where = array(
-                    'ID' => $_POST['ID']
-                );
-                $course = new CourseModel(Application::getInstance()->getDBconnection());
-                if($course->delete($where))
+                try
                 {
-                    echo "TRUE";
+                    $where = array(
+                        'ID' => $_POST['ID']
+                    );
+                    $course = new CourseModel(Application::getInstance()->getDBconnection());
+                    if($course->delete($where))
+                    {
+                        echo "TRUE";
+                    }
+                    else
+                    {
+                        echo "FALSE";
+                    }
                 }
-                else
+                catch(\Exception $e)
                 {
-                    echo "FALSE";
+                    echo "ERROR";
                 }
             }
         }

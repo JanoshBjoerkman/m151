@@ -26,14 +26,6 @@ abstract class Controller
     public function info()
     {
         phpinfo();     
-        
-        ini_set('author.sarcasm', TRUE);
-        if($leser == 'triggered')
-        {
-            echo "Sorry :)";
-        }
-        ini_set('author.sarcasm', FALSE);
-
     }
 
     // seen on: https://stackoverflow.com/questions/110575/do-htmlspecialchars-and-mysql-real-escape-string-keep-my-php-code-safe-from-inje

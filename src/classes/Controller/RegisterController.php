@@ -17,8 +17,8 @@ class RegisterController extends Controller
         if($this->allFieldsSet())
         {
             // safe passwords
-            $pw1 = $this->escapeInput($_POST['password1']);
-            $pw2 = $this->escapeInput($_POST['password2']);
+            $pw1 = ($_POST['password1']);
+            $pw2 = ($_POST['password2']);
             // prepare data dictionary 
             $data = array(
                 'Email' => $this->escapeInput($_POST['email']),
@@ -65,15 +65,14 @@ class RegisterController extends Controller
                     );
                 }
             }
-            catch(\PDOException $e)
-            {
-                // TODO: Errorsite
-                
-            }
             catch(\Exception $e)
             {
-                // TODO: Errorsite
-                
+                $this->view->show_error_message(
+                    "Datenbank-Fehler",
+                    "Leider ist etwas schiefgelaufen...",
+                    "Fehler:",
+                    "Versuchen Sie es zu einem späteren Zeitpunkt oder wenden Sie sich an den Administrator."
+                );                
             }
         }
     }
@@ -86,7 +85,14 @@ class RegisterController extends Controller
                   isset($_POST['address']) &&
                   isset($_POST['ort']) &&
                   isset($_POST['plz']);
-        if($allSet)
+        $notEmpty = (!empty($_POST['email']) &&
+            !empty($_POST['password1']) &&
+            !empty($_POST['password2']) &&
+            !empty($_POST['address']) &&
+            !empty($_POST['ort']) &&
+            !empty($_POST['plz'])
+            );
+        if($allSet && $notEmpty)
         {
             return true;
         }
