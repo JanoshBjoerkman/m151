@@ -218,7 +218,7 @@ class ManageView extends View
         ));
         return $this->view->fetch($this->templateDir."courses_course_info_modal.html");
     }
-
+    
     public function getCourseDayInfoTable($index, $courseDay)
     {
         $class_text = "";

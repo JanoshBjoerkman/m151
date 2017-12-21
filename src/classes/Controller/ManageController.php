@@ -502,7 +502,7 @@ class ManageController extends Controller
         else
         {
             echo "ERROR";
-        }
+        }   
     }
 
     public function show_course_info()
